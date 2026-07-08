@@ -1,0 +1,2094 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ressonância Systems - Soluções em Tecnologia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        /* ================================================================
+           ESTILOS DO SITE CORPORATIVO
+        ================================================================ */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { 
+            background:#e6e6e6; 
+            font-family:'Times New Roman', Times, serif; 
+            color:#333; 
+            min-height:100vh; 
+            display:flex; 
+            justify-content:center; 
+            align-items:center; 
+            padding:20px;
+        }
+        .corporate-site {
+            width:860px;
+            background:#fffff0;
+            border:3px solid #999;
+            padding:20px;
+            box-shadow:5px 5px 15px rgba(0,0,0,0.2);
+            font-size:14px;
+            transition: opacity 0.8s ease;
+        }
+        .corporate-site.hidden { opacity:0; pointer-events:none; }
+        .header { text-align:center; border-bottom:3px double #333; padding-bottom:10px; margin-bottom:15px; }
+        .header h1 { font-family:'Times New Roman', serif; font-size:28px; letter-spacing:2px; color:#000080; }
+        .header marquee { font-family:'VT323', monospace; font-size:16px; color:#000; background:#e0e0e0; padding:2px 0; }
+        .header img.logo { width:80px; height:80px; image-rendering:pixelated; border:1px solid #333; background:#fff; padding:5px; display:inline-block; }
+
+        .nav { text-align:center; margin:10px 0; background:#d0d0d0; padding:5px 0; border:1px solid #999; }
+        .nav a { margin:0 10px; color:#000080; text-decoration:none; font-weight:bold; cursor:pointer; }
+        .nav a:hover { text-decoration:underline; color:#ff0000; }
+        .nav a.active { color:#ff0000; text-decoration:underline; }
+
+        .page { display:none; padding:10px; border:1px solid #ccc; background:#f9f9f9; min-height:250px; }
+        .page.active { display:block; }
+        .page h2 { font-family:'Times New Roman', serif; font-size:20px; color:#000080; border-bottom:1px solid #999; padding-bottom:5px; margin-bottom:10px; }
+        .page h3 { font-size:16px; color:#333; }
+        .page ul { list-style-type:square; margin-left:20px; }
+        .page ul li { margin:5px 0; }
+
+        /* Formulário de Contato */
+        #contactForm label { display:inline-block; width:70px; font-weight:bold; }
+        #contactForm input, #contactForm textarea { width:300px; padding:2px; border:1px inset #ccc; font-family:'VT323'; font-size:14px; background:#fff; margin-bottom:5px; }
+        #contactForm button { background:#000080; color:#fff; border:1px outset #333; padding:2px 12px; font-family:'Times New Roman', serif; font-weight:bold; cursor:pointer; }
+
+        .footer { margin-top:15px; padding-top:10px; border-top:1px solid #999; text-align:center; font-size:12px; color:#666; display:flex; flex-direction:column; gap:5px; }
+        .counter { font-family:'VT323', monospace; font-size:14px; color:#333; }
+        #visitorCounter { animation: blinkCounter 1s infinite; }
+        @keyframes blinkCounter { 0%, 100% { opacity:1; } 50% { opacity:0.3; } }
+
+        .restricted-link { cursor:pointer; color:#999; text-decoration:none; font-size:10px; }
+        .restricted-link:hover { color:#000080; text-decoration:underline; }
+
+        #loginForm { display:none; margin:10px auto; padding:10px; border:1px dashed #999; background:#f0f0f0; width:250px; text-align:center; }
+        #loginForm.visible { display:block; }
+        #loginForm label { display:inline-block; width:60px; font-weight:bold; font-size:12px; }
+        #loginForm input[type="text"], #loginForm input[type="password"] { width:150px; padding:2px; border:1px inset #ccc; font-family:'VT323'; font-size:14px; background:#fff; }
+        #loginForm button { background:#000080; color:#fff; border:1px outset #333; padding:2px 10px; font-family:'Times New Roman', serif; font-weight:bold; cursor:pointer; }
+        #loginForm button:disabled { opacity:0.6; cursor:not-allowed; }
+        #loginMsg { margin-top:5px; font-size:13px; color:#ff0000; }
+
+        /* ================================================================
+           ESTILOS DO BIOS / ARG (Isolados)
+        ================================================================ */
+        .bios-container { display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; background:#050505; }
+        .bios-container.active { display:block; }
+        .bios-container * { box-sizing: border-box; user-select:none; }
+
+        /* Cursor customizado estilo Windows 2000 */
+        .bios-container .desktop, .bios-container .taskbar, .bios-container .window, .bios-container .icon, .bios-container .item {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M0 0 L24 24 L12 16 L9 22 L5 20 L8 14 Z" fill="%23ffffff" stroke="%23000000" stroke-width="1.5"/></svg>') 1 1, auto;
+        }
+
+        /* Chuva de dados (Matrix) */
+        .bios-container #rainCanvas {
+            position:fixed; top:0; left:0; width:100%; height:100%;
+            z-index:0; pointer-events:none; opacity:0.4;
+        }
+
+        .bios-container .crt { position:fixed; top:0; left:0; width:100%; height:100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.2) 0px, rgba(0,0,0,0.2) 1px, transparent 1px, transparent 3px); pointer-events:none; z-index:9999; mix-blend-mode:overlay; transition: opacity 2s ease; }
+        .bios-container .crt-faded { opacity:0.1; }
+        .bios-container .burn-in { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9998; background: radial-gradient(ellipse at 50% 80%, rgba(255,255,255,0.02) 0%, transparent 80%); opacity:0; transition: opacity 2s ease; }
+        .bios-container .burn-in.active { opacity:0.5; }
+        .bios-container .glitch-overlay { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9997; background: transparent; display:none; }
+        .bios-container .glitch-overlay.active { display:block; animation: glitchFlash 0.1s infinite; }
+        @keyframes glitchFlash { 0%{opacity:0;} 50%{opacity:0.3;} 100%{opacity:0;} }
+
+        .bios-container #bootScreen { position:fixed; top:0; left:0; width:100%; height:100%; z-index:99999; background:#050505; display:flex; flex-direction:column; justify-content:center; align-items:center; font-size:1.4em; padding:40px; text-align:left; transition:opacity 1.5s ease; border:1px solid #00ff41; box-shadow:inset 0 0 300px rgba(0,255,65,0.05); }
+        .bios-container #bootScreen.hidden { opacity:0; pointer-events:none; }
+        .bios-container .boot-text { max-width:800px; border-left:4px solid #00ff41; padding-left:20px; line-height:1.8; color:#00ff41; text-shadow:0 0 10px #00ff41; }
+        .bios-container .boot-blinking { animation:blink 0.9s infinite; }
+        @keyframes blink { 0%{opacity:0.2;} 50%{opacity:1;} 100%{opacity:0.2;} }
+
+        .bios-container .desktop { position:relative; z-index:10; width:100%; height:100%; background:#0d0d0d; padding:12px; display:none; flex-wrap:wrap; align-content:flex-start; gap:10px; }
+        .bios-container .desktop.active { display:flex; }
+        .bios-container .icon { display:flex; flex-direction:column; align-items:center; width:72px; cursor:pointer; color:#00ff41; font-size:0.6em; transition:all 0.15s; padding:4px; border-radius:4px; }
+        .bios-container .icon:hover { background:rgba(0,255,65,0.05); box-shadow:0 0 10px rgba(0,255,65,0.1); }
+        .bios-container .icon:active { transform:scale(0.92); }
+        .bios-container .icon img { width:40px; height:40px; image-rendering:pixelated; background:#050505; border:1px solid #00ff41; padding:3px; filter:contrast(0.8); }
+        .bios-container .icon span { background:rgba(0,0,0,0.7); padding:2px 6px; border:1px solid #00ff41; }
+
+        .bios-container .taskbar { position:fixed; bottom:0; left:0; width:100%; height:38px; z-index:999; background:#0a0a0a; border-top:1px solid #00ff41; display:none; align-items:center; padding:0 12px; }
+        .bios-container .taskbar.active { display:flex; }
+        .bios-container .clock { margin-left:auto; background:#000; color:#00ffff; padding:2px 10px; border:1px solid #00ff41; font-size:1em; min-width:80px; text-align:center; transition: color 0.5s; }
+        .bios-container .items { display:flex; gap:6px; flex:1; overflow:hidden; }
+        .bios-container .item { background:#000; color:#00ff41; padding:2px 10px; border:1px solid transparent; font-size:0.75em; cursor:pointer; transition: all 0.2s; border-bottom:2px solid transparent; }
+        .bios-container .item.active { border-bottom-color:#00ff41; background:#1a1a1a; }
+        .bios-container .item:hover { background:#1a1a1a; }
+
+        .bios-container .window { position:absolute; z-index:100; background:#0a0a0a; border:1px solid #00ffff; border-radius:4px; box-shadow:0 0 30px rgba(0,255,255,0.03); min-width:300px; min-height:200px; display:none; flex-direction:column; }
+        .bios-container .window.active { display:flex; }
+        .bios-container .titlebar { background: linear-gradient(90deg, #000080, #0000a0); color:#ffffff; padding:4px 8px; border-bottom:1px solid #00ffff; display:flex; justify-content:space-between; align-items:center; font-family:'Press Start 2P'; font-size:0.5em; cursor:grab; border-radius:4px 4px 0 0; }
+        .bios-container .titlebar .sysicon { display:inline-block; width:12px; text-align:center; transition: all 0.3s; }
+        .bios-container .titlebar .sysicon.synced { animation: pulsePi 2s infinite; }
+        @keyframes pulsePi { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+        .bios-container .titlebar .controls { display:flex; gap:6px; }
+        .bios-container .titlebar .controls span { cursor:pointer; color:#ff00ff; transition:color 0.2s; }
+        .bios-container .titlebar .controls span:hover { color:#ffffff; }
+        .bios-container .body { padding:12px; flex:1; overflow:auto; background:#000; color:#00ff41; border:1px inset #151515; font-family:'VT323'; font-size:1.1em; line-height:1.5; }
+
+        .bios-container .terminal { height:100%; display:flex; flex-direction:column; }
+        .bios-container .term-out { flex:1; overflow-y:auto; white-space:pre-wrap; margin-bottom:6px; line-height:1.6; font-size:1.2em; }
+        .bios-container .term-line { display:flex; align-items:center; padding:2px 0; }
+        .bios-container .term-prompt { color:#ff00ff; margin-right:6px; }
+        .bios-container .term-input { background:transparent; border:none; color:#00ff41; font-family:'VT323'; font-size:1.2em; width:100%; outline:none; caret-color:#00ff41; }
+        .bios-container .term-prompt::after { content:'_'; animation: blink 1s infinite; }
+
+        .bios-container .radio-container { text-align:center; }
+        .bios-container .radio-container canvas { width:100%; height:100px; border:1px solid #00ffff; background:#000; display:block; }
+        .bios-container .radio-container input[type="range"] { width:100%; margin-top:10px; accent-color:#00ff41; background:#000; }
+
+        .bios-container .calendar-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; text-align:center; color:#00ffff; font-size:1em; }
+        .bios-container .calendar-grid span { padding:4px 0; }
+        .bios-container .calendar-day { cursor:pointer; transition:color 0.2s; }
+        .bios-container .calendar-day:hover { color:#ffffff; }
+
+        .bios-container .bsod { display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:999999; background:#0000aa; color:#fff; font-family:'VT323'; font-size:1.5em; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:40px; animation: bsodFlicker 2s infinite; }
+        @keyframes bsodFlicker { 0%,100%{opacity:1;} 2%{opacity:0.8;} 4%{opacity:1;} }
+        .bios-container .bsod.active { display:flex; }
+        .bios-container .bsod .title { font-family:'Press Start 2P'; font-size:2em; color:#fff; margin-bottom:20px; }
+        .bios-container .bsod .code { color:#ffff00; margin:20px 0; }
+
+        /* Overlay da página secreta */
+        #secretOverlay {
+            display:none;
+            position:fixed;
+            top:0; left:0;
+            width:100%; height:100%;
+            background:rgba(0,0,0,0.9);
+            z-index:99999;
+            justify-content:center;
+            align-items:center;
+            font-family:'Times New Roman', Times, serif;
+        }
+        #secretOverlay.active { display:flex; }
+        #secretBox {
+            background:#0f000f;
+            border:2px solid #ff00ff;
+            padding:30px;
+            max-width:600px;
+            color:#ffccff;
+            box-shadow:0 0 50px #ff00ff;
+            position:relative;
+        }
+        #secretBox h2 { color:#ff00ff; margin-bottom:15px; }
+        #secretBox p { line-height:1.6; }
+        #secretBox .close-btn {
+            position:absolute;
+            top:10px; right:15px;
+            color:#ff00ff;
+            cursor:pointer;
+            font-weight:bold;
+            font-size:1.2em;
+        }
+        #secretBox .close-btn:hover { color:#ffcccc; }
+
+        /* Diálogo de Desligamento */
+        #shutdownDialog {
+            display:none;
+            position:fixed;
+            top:0; left:0;
+            width:100%; height:100%;
+            background:rgba(0,0,0,0.7);
+            z-index:999999;
+            justify-content:center;
+            align-items:center;
+            font-family:'VT323', monospace;
+        }
+        #shutdownDialog.active { display:flex; }
+        #shutdownBox {
+            background:#c0c0c0;
+            border:2px outset #fff;
+            border-right-color:#808080; border-bottom-color:#808080;
+            padding:20px;
+            max-width:350px;
+            color:#000;
+            font-size:1.2em;
+            text-align:center;
+            box-shadow:0 0 30px rgba(0,0,0,0.8);
+        }
+        #shutdownBox .titlebar {
+            background:#000080; color:#fff;
+            padding:4px 8px; margin:-20px -20px 15px -20px;
+            font-family:'Press Start 2P'; font-size:0.5em;
+            text-align:left;
+        }
+        #shutdownBox .buttons { margin-top:15px; display:flex; gap:10px; justify-content:center; }
+        #shutdownBox .buttons button {
+            background:#c0c0c0; border:1px outset #fff; border-right-color:#808080; border-bottom-color:#808080;
+            padding:5px 20px; font-family:'VT323'; font-size:1em; cursor:pointer;
+        }
+        #shutdownBox .buttons button:active { border:1px inset #fff; }
+    </style>
+</head>
+<body>
+    <!-- SITE CORPORATIVO -->
+    <div class="corporate-site" id="corporateSite">
+        <div class="header">
+            <img class="logo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23000080'/%3E%3Ccircle cx='40' cy='40' r='30' fill='%23ffffff'/%3E%3Ctext x='30' y='50' fill='%23000080' font-family='monospace' font-size='40'%3ER%3C/text%3E%3C/svg%3E" alt="Ressonância Systems">
+            <h1>Ressonância Systems</h1>
+            <marquee direction="left" scrollamount="4">Soluções em tecnologia desde 1999 • Compromisso com o futuro • Y2K Ready •</marquee>
+        </div>
+        
+        <div class="nav" id="mainNav">
+            <a data-page="home" class="active">Home</a>
+            <a data-page="servicos">Serviços</a>
+            <a data-page="projetos">Projetos</a>
+            <a data-page="sobre">Sobre</a>
+            <a data-page="noticias">Notícias</a>
+            <a data-page="clientes">Clientes</a>
+            <a data-page="downloads">Downloads</a>
+            <a data-page="contato">Contato</a>
+        </div>
+        
+        <!-- PÁGINAS -->
+        <div id="page-home" class="page active">
+            <h2>Bem-vindo à Ressonância</h2>
+            <div style="border:1px solid #000080; padding:10px; margin-bottom:15px; background:#f0f8ff;">
+                <strong>[ ATUALIZAÇÃO Y2K ]</strong> Nossos sistemas estão 100% preparados para a virada do milênio. Não deixe sua empresa para trás. 
+                <a href="#" onclick="navigate('servicos')">Conheça nossos serviços</a>.
+            </div>
+            <p>Há mais de 20 anos, a Ressonância Systems vem desenvolvendo soluções inovadoras para empresas de todos os portes. Nossa missão é conectar pessoas e tecnologias de forma confiável e segura.</p>
+            <p>Neste novo milênio, a Ressonância é a parceira ideal para quem deseja navegar pelas águas da transformação digital. Atuamos em todo o território nacional com suporte remoto e presencial.</p>
+            
+            <h3 style="margin-top:15px; font-size:18px;">Nossos Diferenciais:</h3>
+            <ul>
+                <li>Equipe especializada em tecnologia de ponta (Windows 2000, Linux e Redes).</li>
+                <li>Atendimento 24/7 com suporte técnico via telefone e e-mail.</li>
+                <li>Parcerias com as maiores empresas de hardware do mundo.</li>
+                <li>Garantia de segurança e integridade dos seus dados.</li>
+            </ul>
+            <p style="margin-top:10px; font-style:italic; text-align:right;">— "O futuro é feito de ressonância."</p>
+        </div>
+        
+        <div id="page-servicos" class="page">
+            <h2>Nossos Serviços Especializados</h2>
+            <p>Oferecemos um portfólio completo para preparar sua empresa para o novo milênio. Conheça nossos serviços em detalhes:</p>
+            
+            <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
+                <h3 style="color:#000080;">[ INFRAESTRUTURA ]</h3>
+                <p>Planejamento, implementação e manutenção de redes corporativas. Trabalhamos com cabos categoria 5e, switches gerenciáveis e roteadores Cisco, garantindo que sua empresa esteja sempre conectada.</p>
+            </div>
+            
+            <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
+                <h3 style="color:#000080;">[ DESENVOLVIMENTO ]</h3>
+                <p>Criação de sistemas web, aplicativos desktop e soluções customizadas em linguagens como Delphi, Visual Basic 6 e ASP. Perfeitos para automação comercial e gestão empresarial.</p>
+            </div>
+            
+            <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
+                <h3 style="color:#000080;">[ SEGURANÇA ]</h3>
+                <p>Auditorias completas de sistemas, testes de penetração (pen-test) e implementação de políticas de segurança. Nossa equipe garante que seus dados estejam protegidos contra invasões e malwares.</p>
+            </div>
+            
+            <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
+                <h3 style="color:#000080;">[ NUVEM ]</h3>
+                <p>Migração e gerenciamento de ambientes cloud, garantindo escalabilidade e disponibilidade total dos seus sistemas. Trabalhamos com as principais plataformas do mercado.</p>
+            </div>
+        </div>
+        
+        <div id="page-projetos" class="page">
+            <h2>Projetos em Destaque</h2>
+            <p>Confira alguns dos projetos mais marcantes realizados pela Ressonância Systems.</p>
+            
+            <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
+                <h3 style="color:#000080;">Projeto "Portal"</h3>
+                <p>Desenvolvimento de um sistema de comunicação de baixa latência para uma rede de pesquisa. O projeto foi concluído em 1999 e até hoje é referência em tecnologia de ponta.</p>
+                <p><em>Nota: O nome "Portal" foi escolhido pelo cliente, não pela Ressonância.</em></p>
+            </div>
+            
+            <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
+                <h3 style="color:#000080;">Projeto "Espectro"</h3>
+                <p>Implementação de um sistema de análise de espectro de radiofrequência para uma instituição de pesquisa. O projeto detectou sinais inexplicáveis na faixa de 1999 Hz.</p>
+            </div>
+            
+            <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
+                <h3 style="color:#000080;">Projeto "Milênio"</h3>
+                <p>Consultoria para adequação Y2K de mais de 50 empresas. Todas as auditorias apontaram para uma anomalia nos sistemas de data, que foi corrigida com sucesso.</p>
+            </div>
+        </div>
+        
+        <div id="page-sobre" class="page">
+            <h2>Sobre a Ressonância</h2>
+            <p><strong>Fundada em 1999</strong>, a Ressonância Systems nasceu com a missão de antecipar as necessidades tecnológicas de um mundo em constante transformação.</p>
+            
+            <h3 style="margin-top:10px; font-size:18px;">Linha do Tempo:</h3>
+            <ul style="list-style:none; padding-left:0;">
+                <li><strong>1999:</strong> Fundação da empresa com foco em redes de computadores.</li>
+                <li><strong>1999:</strong> Primeiro contrato com uma instituição de pesquisa para análise de sinais de rádio.</li>
+                <li><strong>2000:</strong> Expansão para desenvolvimento de sistemas e consultoria em segurança.</li>
+                <li><strong>2000:</strong> Parceria com a Microsoft para implementação do Windows 2000 em empresas.</li>
+                <li><strong>2000:</strong> Descoberta de uma anomalia em sistemas de data durante testes Y2K – origem desconhecida.</li>
+                <li><strong>Atualmente:</strong> Referência em soluções tecnológicas para o novo milênio.</li>
+            </ul>
+            
+            <p style="margin-top:10px;">Nossa equipe é composta por engenheiros, desenvolvedores e especialistas em segurança que trabalham em sintonia para entregar resultados excepcionais.</p>
+            <p><strong>Nossa visão:</strong> Ser a ponte entre o presente e o futuro, conectando pessoas e negócios através da tecnologia.</p>
+        </div>
+        
+        <div id="page-noticias" class="page">
+            <h2>Notícias e Novidades</h2>
+            <p>Acompanhe as últimas atualizações do mundo da tecnologia e da Ressonância Systems.</p>
+            
+            <div style="border:1px solid #999; padding:10px; margin:10px 0; background:#fff;">
+                <h3 style="color:#000080;">► Microsoft lança o Windows 2000!</h3>
+                <p><em>17/02/2000</em> — A Microsoft anunciou oficialmente o lançamento do Windows 2000, o sistema operacional mais seguro e estável da empresa. A Ressonância Systems está pronta para auxiliar sua empresa na migração.</p>
+            </div>
+            
+            <div style="border:1px solid #999; padding:10px; margin:10px 0; background:#fff;">
+                <h3 style="color:#000080;">► Ressonância Systems comemora 1 ano</h3>
+                <p><em>31/12/1999</em> — Nossa empresa completa 1 ano de existência e celebramos com o lançamento do nosso novo portal de clientes. Estamos prontos para o ano 2000!</p>
+            </div>
+            
+            <div style="border:1px solid #999; padding:10px; margin:10px 0; background:#fff;">
+                <h3 style="color:#000080;">► O Bug do Milênio (Y2K) – Estamos preparados!</h3>
+                <p><em>01/12/1999</em> — Com a virada do ano se aproximando, muitas empresas temem os efeitos do Bug do Milênio. A Ressonância Systems já realizou auditorias em mais de 50 empresas e garante: seus sistemas estão prontos.</p>
+            </div>
+            
+            <div style="border:1px solid #999; padding:10px; margin:10px 0; background:#fff;">
+                <h3 style="color:#000080;">► Sinais de rádio misteriosos detectados</h3>
+                <p><em>20/11/1999</em> — Durante um projeto de monitoramento de espectro, nossa equipe detectou sinais de rádio na frequência de 1999 Hz, sem origem identificada. As investigações continuam.</p>
+            </div>
+        </div>
+        
+        <div id="page-clientes" class="page">
+            <h2>Nossos Clientes</h2>
+            <p>Empresas que confiaram na Ressonância Systems para modernizar suas operações:</p>
+            
+            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap:15px; margin-top:15px;">
+                <div style="border:1px solid #999; padding:10px; text-align:center; background:#fff;"><strong>TechCorp Systems</strong><br><span style="font-size:0.8em;">Infraestrutura</span></div>
+                <div style="border:1px solid #999; padding:10px; text-align:center; background:#fff;"><strong>MegaStore Retail</strong><br><span style="font-size:0.8em;">Sistema ERP</span></div>
+                <div style="border:1px solid #999; padding:10px; text-align:center; background:#fff;"><strong>GlobalNet Solutions</strong><br><span style="font-size:0.8em;">Rede Corporativa</span></div>
+                <div style="border:1px solid #999; padding:10px; text-align:center; background:#fff;"><strong>FutureTech Security</strong><br><span style="font-size:0.8em;">Segurança</span></div>
+                <div style="border:1px solid #999; padding:10px; text-align:center; background:#fff;"><strong>OmniData Cloud</strong><br><span style="font-size:0.8em;">Cloud</span></div>
+                <div style="border:1px solid #999; padding:10px; text-align:center; background:#fff;"><strong>Sigma Corp</strong><br><span style="font-size:0.8em;">Suporte 24h</span></div>
+                <div style="border:1px solid #999; padding:10px; text-align:center; background:#fff;"><strong>Instituto de Pesquisa Aurora</strong><br><span style="font-size:0.8em;">Análise de Sinais</span></div>
+            </div>
+        </div>
+        
+        <div id="page-downloads" class="page">
+            <h2>Downloads</h2>
+            <p>Área de downloads para clientes e parceiros.</p>
+            <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
+                <p><strong>Manual do Projeto Portal</strong> (PDF, 2.4 MB)</p>
+                <p><a href="#" onclick="alert('Arquivo corrompido. Entre em contato com o suporte.')">Baixar</a></p>
+            </div>
+            <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
+                <p><strong>Relatório Y2K – Análise de Anomalias</strong> (DOC, 800 KB)</p>
+                <p><a href="#" onclick="alert('Arquivo não disponível.')">Baixar</a></p>
+            </div>
+            <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
+                <p><strong>Guia de Migração para Windows 2000</strong> (PDF, 1.2 MB)</p>
+                <p><a href="#" onclick="alert('Download iniciado (simulado).')">Baixar</a></p>
+            </div>
+        </div>
+        
+        <div id="page-contato" class="page">
+            <h2>Entre em Contato</h2>
+            <p>Estamos sempre prontos para atender você. Entre em contato conosco pelos canais abaixo:</p>
+            
+            <div style="border:1px solid #ccc; padding:10px; background:#fff; margin:10px 0;">
+                <p><strong>Telefone:</strong> (11) 2000-1999</p>
+                <p><strong>E-mail:</strong> contato@ressonancia.com.br</p>
+                <p><strong>Endereço:</strong> Av. do Milênio, 2000 - Centro, São Paulo - SP</p>
+                <p><strong>Horário:</strong> Segunda a Sexta, das 8h às 18h</p>
+            </div>
+            
+            <p><strong>Ou envie uma mensagem:</strong></p>
+            <form id="contactForm" onsubmit="return handleContact(event)">
+                <label>Nome:</label>
+                <input type="text" name="nome" required><br>
+                <label>E-mail:</label>
+                <input type="email" name="email" required><br>
+                <label>Mensagem:</label>
+                <textarea name="mensagem" rows="4" required></textarea><br>
+                <button type="submit">Enviar</button>
+            </form>
+            <div id="contactMsg" style="margin-top:10px; font-weight:bold;"></div>
+        </div>
+        
+        <!-- Área de Login (Escondida no rodapé) -->
+        <div id="loginForm">
+            <p style="font-size:0.8em; text-align:center; margin-bottom:5px;">Acesso Restrito</p>
+            <form onsubmit="return handleLogin(event)">
+                <label>Usuário:</label>
+                <input type="text" id="username" placeholder="usuário"><br>
+                <label>Senha:</label>
+                <input type="password" id="password" placeholder="senha"><br>
+                <button type="submit" id="loginBtn">Entrar</button>
+                <div id="loginMsg"></div>
+            </form>
+        </div>
+
+        <div class="footer">
+            <span>&copy; 1999-2000 Ressonância Systems.</span>
+            <span class="counter">Você é o visitante: <span id="visitorCounter">0000001</span></span>
+            <br>
+            <span class="restricted-link" onclick="toggleLogin()">[ Acesso Restrito ]</span>
+            <span style="cursor:pointer; color:#999; font-size:10px;" onclick="showSecret()">[ Política de Privacidade ]</span>
+        </div>
+    </div>
+
+    <!-- OVERLAY DA PÁGINA SECRETA -->
+    <div id="secretOverlay">
+        <div id="secretBox">
+            <span class="close-btn" onclick="hideSecret()">✖</span>
+            <h2>[ ACESSO RESTRITO ]</h2>
+            <p><strong>Você encontrou o que não deveria.</strong></p>
+            <p>Em 1999, um grupo de pesquisadores descobriu uma anomalia temporal durante testes de sistemas de data. Eles perceberam que o ano 2000 não era apenas uma virada de calendário, mas um <strong>portal</strong> para outra dimensão.</p>
+            <p>A Ressonância Systems foi criada como fachada para estudar esse fenômeno. Os projetos "Portal", "Espectro" e "Milênio" foram tentativas de abrir e controlar o portal.</p>
+            <p>O sinal de rádio em <strong>1999 Hz</strong> é a chave. O dia <strong>31 de dezembro de 1999</strong> é o ponto de ativação.</p>
+            <p style="color:#ff0000; font-weight:bold;">Se você está lendo isso, o sistema sabe que você sabe. Não conte a ninguém.</p>
+            <p style="font-size:0.8em; color:#888;">— O administrador.</p>
+            <hr style="border-color:#ff00ff;">
+            <p style="font-size:0.7em; color:#666;">Esta página não existe. Você não a viu.</p>
+        </div>
+    </div>
+
+    <!-- DIÁLOGO DE DESLIGAMENTO -->
+    <div id="shutdownDialog">
+        <div id="shutdownBox">
+            <div class="titlebar">Desligar o sistema</div>
+            <p>Você tem certeza de que deseja desligar o computador?</p>
+            <div class="buttons">
+                <button onclick="confirmShutdown()">Sim</button>
+                <button onclick="cancelShutdown()">Não</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BIOS / ARG -->
+    <div class="bios-container" id="biosContainer">
+        <canvas id="rainCanvas"></canvas>
+        <div class="crt" id="crtEffect"></div>
+        <div class="burn-in" id="burnIn"></div>
+        <div id="bootScreen">
+            <div class="boot-text" id="bootContent">
+                <span style="color:#ff00ff;">[LUGAR_BIOS v4.0]</span><br>
+                O sistema está carregado.<span class="boot-blinking">_</span><br>
+                <span style="color:#ffff00;">Pressione [ENTER] ou clique para acessar os arquivos.</span>
+            </div>
+        </div>
+        <div class="desktop" id="desktop">
+            <div class="icon" onclick="openWindow('terminal')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='10' y='28' fill='%2300ff41' font-family='monospace' font-size='20'%3E_%3C/text%3E%3C/svg%3E"><span>TERMINAL</span></div>
+            <div class="icon" onclick="openWindow('ie')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ccircle cx='20' cy='20' r='10' fill='%2300ff41'/%3E%3C/svg%3E"><span>IE</span></div>
+            <div class="icon" onclick="openWindow('notepad')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='12' y='26' fill='%2300ff41' font-family='monospace' font-size='8'%3ENOTA%3C/text%3E%3C/svg%3E"><span>NOTAS</span></div>
+            <div class="icon" onclick="openWindow('radio')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='12' y='28' fill='%2300ff41' font-family='monospace' font-size='18'%3E♪%3C/text%3E%3C/svg%3E"><span>RÁDIO</span></div>
+            <div class="icon" onclick="openWindow('calendar')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='10' y='28' fill='%2300ff41' font-family='monospace' font-size='14'%3E1999%3C/text%3E%3C/svg%3E"><span>CAL</span></div>
+            <div class="icon" onclick="openWindow('about')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='16' y='28' fill='%2300ff41' font-family='monospace' font-size='16'%3E%3F%3C/text%3E%3C/svg%3E"><span>SOBRE</span></div>
+            <div class="icon" onclick="openWindow('sysinfo')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='10' y='28' fill='%2300ff41' font-family='monospace' font-size='16'%3E%3F%3C/text%3E%3C/svg%3E"><span>SISTEMA</span></div>
+            <div class="icon" onclick="openWindow('archive')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Cpath d='M10 10 L30 10 L30 30 L10 30 Z' fill='%2300ff41'/%3E%3C/svg%3E"><span>ARQUIVO</span></div>
+            <div class="icon" onclick="openWindow('email')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Crect x='8' y='12' width='24' height='16' fill='%2300ff41'/%3E%3C/svg%3E"><span>EMAIL</span></div>
+            <div class="icon" onclick="openWindow('map')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ccircle cx='20' cy='20' r='15' fill='%2300ff41'/%3E%3Ctext x='11' y='26' fill='%23000' font-family='monospace' font-size='16'%3EX%3C/text%3E%3C/svg%3E"><span>MAPA</span></div>
+        </div>
+        <div class="taskbar" id="taskbar">
+            <div style="display:flex; align-items:center; gap:10px; margin-right:10px;">
+                <span style="color:#00ff41; font-size:0.75em; cursor:pointer;" onclick="showShutdownDialog()">[ Desligar ]</span>
+            </div>
+            <div class="items" id="tbItems"></div>
+            <div class="clock" id="clock">--:--:--</div>
+        </div>
+    </div>
+
+    <script>
+        // ====================================================================
+        // SITE CORPORATIVO
+        // ====================================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('mainNav').addEventListener('click', function(e) {
+                const link = e.target.closest('a');
+                if (!link || !link.dataset.page) return;
+                e.preventDefault();
+                const page = link.dataset.page;
+                document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.nav a').forEach(el => el.classList.remove('active'));
+                document.getElementById('page-' + page).classList.add('active');
+                link.classList.add('active');
+            });
+            loadWorld();
+            
+            let counter = localStorage.getItem('visitor_count') || 0;
+            counter = parseInt(counter) + 1;
+            localStorage.setItem('visitor_count', counter);
+            document.getElementById('visitorCounter').innerText = String(counter).padStart(7, '0');
+        });
+
+        function navigate(page) {
+            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav a').forEach(el => el.classList.remove('active'));
+            document.getElementById('page-' + page).classList.add('active');
+            document.querySelectorAll('.nav a').forEach(el => {
+                if (el.dataset.page === page) el.classList.add('active');
+            });
+        }
+
+        function toggleLogin() {
+            const form = document.getElementById('loginForm');
+            form.classList.toggle('visible');
+            if (form.classList.contains('visible')) document.getElementById('username').focus();
+            else document.getElementById('loginMsg').innerText = '';
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+            const msg = document.getElementById('loginMsg');
+            const btn = document.getElementById('loginBtn');
+
+            if (user === 'admin' && pass === '2000') {
+                btn.disabled = true;
+                msg.style.color = '#008000';
+                msg.innerText = 'Acesso autorizado. Redirecionando...';
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                setTimeout(() => {
+                    document.getElementById('corporateSite').classList.add('hidden');
+                    document.getElementById('biosContainer').classList.add('active');
+                    startARG();
+                    btn.disabled = false;
+                }, 800);
+            } else {
+                msg.style.color = '#ff0000';
+                msg.innerText = 'Credenciais inválidas.';
+            }
+            return false;
+        }
+
+        function handleContact(e) {
+            e.preventDefault();
+            const msg = document.getElementById('contactMsg');
+            msg.style.color = '#008000';
+            msg.innerText = 'Mensagem enviada com sucesso! Entraremos em contato em breve.';
+            document.getElementById('contactForm').reset();
+            console.log('[CONTATO] Mensagem enviada pelo site corporativo.');
+            setTimeout(() => {
+                msg.innerText = '';
+            }, 5000);
+            return false;
+        }
+
+        // ====================================================================
+        // OVERLAY SECRETO
+        // ====================================================================
+        function showSecret() { document.getElementById('secretOverlay').classList.add('active'); }
+        function hideSecret() { document.getElementById('secretOverlay').classList.remove('active'); }
+
+        // ====================================================================
+        // DIÁLOGO DE DESLIGAMENTO
+        // ====================================================================
+        function showShutdownDialog() { document.getElementById('shutdownDialog').classList.add('active'); }
+        function cancelShutdown() { document.getElementById('shutdownDialog').classList.remove('active'); }
+        function confirmShutdown() {
+            document.getElementById('shutdownDialog').classList.remove('active');
+            triggerBSOD();
+        }
+
+        // ====================================================================
+        // ARG - ESTADO E INICIALIZAÇÃO
+        // ====================================================================
+        let _argStarted = false;
+        let _booted = false;
+
+        function bootKeyHandler(e) {
+            if (e.key === 'Enter' && !_booted) { _booted = true; doBoot(); }
+        }
+        function bootClickHandler(e) {
+            if (!_booted) { _booted = true; doBoot(); }
+        }
+
+        const world = {
+            radioSynced: false,
+            calendarMarked: false,
+            calendarMarked24: false,
+            calendarMarked12: false,
+            calendarMarked25: false,
+            calendarMarked1: false,
+            calendarMarked6: false,
+            terminalOpened: 0,
+            ieReopened: false,
+            logReadAfterMark: false,
+            noteLinesAdded: [],
+            sessionTime: 0,
+            radioPlaying: false,
+            radioCtx: null,
+            radioOsc: null,
+            radioGain: null,
+            promptChanged: false,
+            isFrozen: false,
+            burnIn: false,
+            glitchActive: false,
+            finalTriggered: false,
+            startTime: Date.now(),
+            invalidCommands: 0,
+            portalFound: false,
+            adminDiaryUnlocked: false
+        };
+        let history = [];
+
+        function loadWorld() {
+            try {
+                const saved = JSON.parse(localStorage.getItem('lugar_final_state'));
+                if (saved) {
+                    Object.assign(world, saved);
+                    history = saved.history || [];
+                }
+            } catch(e) {}
+        }
+        function saveWorld() {
+            const toSave = { ...world, history };
+            localStorage.setItem('lugar_final_state', JSON.stringify(toSave));
+        }
+
+        function startARG() {
+            if (_argStarted) return;
+            _argStarted = true;
+            _booted = false;
+            document.removeEventListener('keydown', bootKeyHandler);
+            document.removeEventListener('click', bootClickHandler);
+            document.addEventListener('keydown', bootKeyHandler);
+            document.addEventListener('click', bootClickHandler);
+            setTimeout(() => {
+                if (!_booted) { _booted = true; doBoot(); }
+            }, 300);
+        }
+
+        function doBoot() {
+            document.getElementById('bootScreen').classList.add('hidden');
+            document.getElementById('desktop').classList.add('active');
+            document.getElementById('taskbar').classList.add('active');
+            
+            // Inicia a chuva de dados Matrix
+            initRain();
+
+            setTimeout(() => {
+                document.getElementById('burnIn').classList.add('active');
+                world.burnIn = true;
+            }, 60000);
+            setInterval(() => {
+                if (!world.isFrozen && Math.random() > 0.98) {
+                    const overlay = document.createElement('div');
+                    overlay.className = 'glitch-overlay active';
+                    overlay.id = 'glitchOverlay';
+                    document.querySelector('.bios-container').appendChild(overlay);
+                    setTimeout(() => {
+                        overlay.classList.remove('active');
+                        setTimeout(() => overlay.remove(), 100);
+                    }, 200);
+                }
+            }, 3000);
+            initClock();
+            setTimeout(() => openWindow('terminal'), 300);
+            playAmbient();
+        }
+
+        // ==========================================================================
+        // CHUVA DE DADOS (MATRIX)
+        // ==========================================================================
+        let rainInterval = null;
+        function initRain() {
+            const canvas = document.getElementById('rainCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            const columns = canvas.width / 20;
+            const drops = [];
+            for(let x = 0; x < columns; x++) drops[x] = 1;
+
+            function drawRain() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                for(let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    ctx.fillStyle = Math.random() > 0.9 ? '#ff00ff' : '#00ff41';
+                    ctx.font = '20px monospace';
+                    ctx.fillText(text, i * 20, drops[i] * 20);
+                    if(drops[i] * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+                rainInterval = requestAnimationFrame(drawRain);
+            }
+            drawRain();
+        }
+
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('rainCanvas');
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+        });
+
+        // ==========================================================================
+        // SOM AMBIENTE DINÂMICO
+        // ==========================================================================
+        let ambientAudioCtx = null;
+        let ambientOsc = null;
+        let ambientGain = null;
+        let ambientInterval = null;
+        let ambientFilter = null;
+
+        function playAmbient() {
+            if (ambientAudioCtx) return;
+            try {
+                ambientAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                ambientFilter = ambientAudioCtx.createBiquadFilter();
+                ambientFilter.type = 'lowpass';
+                ambientFilter.frequency.value = 400;
+
+                ambientOsc = ambientAudioCtx.createOscillator();
+                ambientGain = ambientAudioCtx.createGain();
+                
+                ambientOsc.type = 'sawtooth';
+                ambientOsc.frequency.value = 55;
+                ambientGain.gain.value = 0.015;
+                
+                ambientOsc.connect(ambientFilter);
+                ambientFilter.connect(ambientGain);
+                ambientGain.connect(ambientAudioCtx.destination);
+                ambientOsc.start();
+
+                ambientInterval = setInterval(() => {
+                    if (ambientOsc && !world.isFrozen) {
+                        if (world.finalTriggered) {
+                            ambientOsc.type = 'square';
+                            ambientOsc.frequency.value = 40 + Math.random() * 40;
+                            ambientGain.gain.value = 0.08;
+                            ambientFilter.frequency.value = 150 + Math.random() * 50;
+                        } else if (world.radioSynced) {
+                            ambientOsc.type = 'sine';
+                            ambientOsc.frequency.value = 42 + Math.random() * 4;
+                            ambientGain.gain.value = 0.008;
+                            ambientFilter.frequency.value = 800;
+                        } else {
+                            ambientOsc.type = 'sawtooth';
+                            ambientOsc.frequency.value = 50 + Math.random() * 20;
+                            ambientGain.gain.value = 0.015;
+                            ambientFilter.frequency.value = 400;
+                        }
+                    }
+                }, 3000);
+            } catch(e) {}
+        }
+
+        function playKeyClick() {
+            if (!ambientAudioCtx) return;
+            try {
+                const osc = ambientAudioCtx.createOscillator();
+                const gain = ambientAudioCtx.createGain();
+                osc.type = 'square';
+                osc.frequency.value = 800;
+                gain.gain.value = 0.03;
+                gain.gain.exponentialRampToValueAtTime(0.001, ambientAudioCtx.currentTime + 0.05);
+                osc.connect(gain);
+                gain.connect(ambientAudioCtx.destination);
+                osc.start();
+                osc.stop(ambientAudioCtx.currentTime + 0.05);
+            } catch(e) {}
+        }
+
+        function playTune() {
+            if (!ambientAudioCtx) return;
+            try {
+                const notes = [523, 659, 784, 1047];
+                notes.forEach((freq, i) => {
+                    setTimeout(() => {
+                        const osc = ambientAudioCtx.createOscillator();
+                        const gain = ambientAudioCtx.createGain();
+                        osc.frequency.value = freq;
+                        gain.gain.value = 0.1;
+                        gain.gain.exponentialRampToValueAtTime(0.001, ambientAudioCtx.currentTime + 0.3);
+                        osc.connect(gain);
+                        gain.connect(ambientAudioCtx.destination);
+                        osc.start();
+                        osc.stop(ambientAudioCtx.currentTime + 0.3);
+                    }, i * 150);
+                });
+            } catch(e) {}
+        }
+
+        function playSuccess() {
+            if (!ambientAudioCtx) return;
+            try {
+                const notes = [440, 554, 659, 880];
+                notes.forEach((freq, i) => {
+                    setTimeout(() => {
+                        const osc = ambientAudioCtx.createOscillator();
+                        const gain = ambientAudioCtx.createGain();
+                        osc.frequency.value = freq;
+                        gain.gain.value = 0.2;
+                        gain.gain.exponentialRampToValueAtTime(0.001, ambientAudioCtx.currentTime + 0.4);
+                        osc.connect(gain);
+                        gain.connect(ambientAudioCtx.destination);
+                        osc.start();
+                        osc.stop(ambientAudioCtx.currentTime + 0.4);
+                    }, i * 200);
+                });
+            } catch(e) {}
+        }
+
+        // ==========================================================================
+        // GERENCIADOR DE JANELAS
+        // ==========================================================================
+        let zIndex = 100;
+
+        function createWindow(id, title, width, height, html) {
+            if (document.getElementById(id)) {
+                const win = document.getElementById(id);
+                win.classList.add('active');
+                win.style.display = '';
+                win.style.zIndex = ++zIndex;
+                updateTaskbarActive(id);
+                return;
+            }
+
+            const win = document.createElement('div');
+            win.className = 'window active';
+            win.id = id;
+            win.style.width = width + 'px';
+            win.style.height = height + 'px';
+            win.style.left = (30 + Math.random() * 150) + 'px';
+            win.style.top = (30 + Math.random() * 100) + 'px';
+            win.style.zIndex = ++zIndex;
+
+            const sysIcon = world.radioSynced ? 'π' : '●';
+            const syncClass = world.radioSynced ? 'sysicon synced' : 'sysicon';
+
+            win.innerHTML = `
+                <div class="titlebar">
+                    <span><span class="${syncClass}">${sysIcon}</span> ${title}</span>
+                    <div class="controls">
+                        <span onclick="minimizeWindow('${id}')">—</span>
+                        <span onclick="closeWindow('${id}')">✖</span>
+                    </div>
+                </div>
+                <div class="body">${html}</div>
+            `;
+
+            document.getElementById('biosContainer').appendChild(win);
+
+            const tbItem = document.createElement('div');
+            tbItem.className = 'item';
+            tbItem.id = 'tb-' + id;
+            tbItem.innerText = title;
+            tbItem.onclick = () => {
+                const w = document.getElementById(id);
+                if (w) {
+                    if (!w.classList.contains('active')) {
+                        w.classList.add('active');
+                        w.style.display = '';
+                        w.style.zIndex = ++zIndex;
+                    } else {
+                        w.classList.remove('active');
+                        w.style.display = 'none';
+                    }
+                    updateTaskbarActive(id);
+                }
+            };
+            document.getElementById('tbItems').appendChild(tbItem);
+            updateTaskbarActive(id);
+
+            const bar = win.querySelector('.titlebar');
+            let dx, dy, dragging = false;
+            bar.addEventListener('mousedown', (e) => {
+                dragging = true;
+                dx = e.clientX - win.offsetLeft;
+                dy = e.clientY - win.offsetTop;
+                win.style.zIndex = ++zIndex;
+            });
+            document.addEventListener('mousemove', (e) => {
+                if (dragging) {
+                    win.style.left = (e.clientX - dx) + 'px';
+                    win.style.top = (e.clientY - dy) + 'px';
+                }
+            });
+            document.addEventListener('mouseup', () => { dragging = false; });
+        }
+
+        function openWindow(id) {
+            const existingWin = document.getElementById(id);
+            if (existingWin) {
+                existingWin.classList.add('active');
+                existingWin.style.display = '';
+                existingWin.style.zIndex = ++zIndex;
+                updateTaskbarActive(id);
+                if (id === 'terminal') {
+                    const input = document.getElementById('termIn');
+                    if (input) setTimeout(() => input.focus(), 50);
+                }
+                return;
+            }
+
+            let title = '', width = 450, height = 300, html = '';
+
+            switch(id) {
+                case 'terminal':
+                    title = 'TERMINAL';
+                    width = 620; height = 480;
+                    world.terminalOpened++;
+                    let promptText = '/>';
+                    if (world.radioSynced && world.terminalOpened >= 2 && !world.promptChanged) {
+                        promptText = '/π>';
+                        world.promptChanged = true;
+                        saveWorld();
+                    }
+                    html = `<div class="terminal"><div class="term-out" id="termOut"></div><div class="term-line"><span class="term-prompt" id="termPrompt">${promptText}</span><input class="term-input" id="termIn" type="text" autofocus></div></div>`;
+                    break;
+                case 'ie':
+                    title = 'INTERNET EXPLORER';
+                    width = 480; height = 300;
+                    let ieDate = '31/12/1999';
+                    if (world.radioSynced && !world.ieReopened) {
+                        ieDate = '01/01/2000';
+                        world.ieReopened = true;
+                        saveWorld();
+                    } else if (world.radioSynced) {
+                        ieDate = '01/01/2000';
+                    } else {
+                        ieDate = '31/12/1999';
+                    }
+                    let ieContent = `<div style="background:#000; color:#00ff41; padding:10px; height:200px; border:1px solid #00ff41; overflow:auto;">
+                        <h3>Projeto Ressonância</h3>
+                        <p>Servidor offline.</p>
+                        <p style="font-size:0.7em; color:#555; margin-top:10px;">Última atualização: ${ieDate}</p>
+                        <p style="font-size:0.7em; color:#555; margin-top:5px;">Sistema operacional: Windows 2000</p>`;
+                    if (world.radioSynced && world.calendarMarked) {
+                        ieContent += `<hr><p style="color:#ff00ff;">Você encontrou a página oculta.</p>
+                        <p>O portal está em 1999. A chave é REVERSE.</p>
+                        <p>Download: <a href="#" onclick="alert('Arquivo baixado: portal.zip (simulado)')">portal.zip</a></p>`;
+                    }
+                    ieContent += `</div>`;
+                    html = ieContent;
+                    break;
+                case 'notepad':
+                    title = 'BLOCO DE NOTAS';
+                    width = 420; height = 300;
+                    let notes = 'Anotações esparsas:\n- O som está em algum lugar.\n- O calendário não parece confiável.';
+                    html = `<textarea id="notepadContent" style="width:100%; height:100%; background:#000; color:#00ff41; border:none; font-family:'VT323'; font-size:1.1em; resize:none; padding:5px;">${notes}</textarea>`;
+                    break;
+                case 'radio':
+                    title = 'RÁDIO AM';
+                    width = 460; height = 310;
+                    html = `<div class="radio-container">
+                        <canvas id="radioCanvas" width="420" height="100" style="width:100%; height:100px; border:1px solid #00ffff; background:#000;"></canvas>
+                        <input type="range" id="freqSlider" min="100" max="2500" value="800" style="width:100%; margin-top:10px; accent-color:#00ff41;">
+                        <span id="freqDisplay" style="color:#00ffff;">800 Hz</span>
+                        <div style="margin-top:10px;">
+                            <button onclick="toggleRadio()" style="background:#000; border:1px solid #00ff41; color:#00ff41; font-family:'VT323'; cursor:pointer; padding:5px 15px; transition:0.2s; border-radius:2px;">LIGAR</button>
+                        </div>
+                        <div id="radioStatus" style="margin-top:5px; color:#555; font-size:0.8em;">Estático</div>
+                    </div>`;
+                    break;
+                case 'calendar':
+                    title = 'CALENDÁRIO';
+                    width = 400; height = 380;
+                    html = `<div id="calContainer"><h3 style="text-align:center; color:#ffff00; margin-bottom:10px;">DEZEMBRO 1999</h3>${buildCalendarHTML()}</div>`;
+                    break;
+                case 'about':
+                    title = 'SOBRE';
+                    width = 320; height = 220;
+                    html = `<h3 style="color:#ff00ff;">LUGAR :: 2000</h3><p>Compilação: 31/12/1999</p><p style="color:#555; font-size:0.8em;">Não há informações úteis aqui.</p><p style="color:#333; font-size:0.6em;">Se você está lendo isso, já está dentro.</p>`;
+                    break;
+                case 'sysinfo':
+                    openSysInfo();
+                    return;
+                case 'archive':
+                    openArchive();
+                    return;
+                case 'email':
+                    openEmail();
+                    return;
+                case 'map':
+                    openMap();
+                    return;
+                default: return;
+            }
+
+            const win = document.createElement('div');
+            win.className = 'window active';
+            win.id = id;
+            win.style.width = width + 'px';
+            win.style.height = height + 'px';
+            win.style.left = (30 + Math.random() * 150) + 'px';
+            win.style.top = (30 + Math.random() * 100) + 'px';
+            win.style.zIndex = ++zIndex;
+
+            const sysIcon = world.radioSynced ? 'π' : '●';
+            const syncClass = world.radioSynced ? 'sysicon synced' : 'sysicon';
+
+            win.innerHTML = `
+                <div class="titlebar">
+                    <span><span class="${syncClass}">${sysIcon}</span> ${title}</span>
+                    <div class="controls">
+                        <span onclick="minimizeWindow('${id}')">—</span>
+                        <span onclick="closeWindow('${id}')">✖</span>
+                    </div>
+                </div>
+                <div class="body">${html}</div>
+            `;
+
+            document.getElementById('biosContainer').appendChild(win);
+
+            const tbItem = document.createElement('div');
+            tbItem.className = 'item';
+            tbItem.id = 'tb-' + id;
+            tbItem.innerText = title;
+            tbItem.onclick = () => {
+                const w = document.getElementById(id);
+                if (w) {
+                    if (!w.classList.contains('active')) {
+                        w.classList.add('active');
+                        w.style.display = '';
+                        w.style.zIndex = ++zIndex;
+                    } else {
+                        w.classList.remove('active');
+                        w.style.display = 'none';
+                    }
+                    updateTaskbarActive(id);
+                }
+            };
+            document.getElementById('tbItems').appendChild(tbItem);
+            updateTaskbarActive(id);
+
+            if (id === 'terminal') {
+                initTerminal();
+                const input = document.getElementById('termIn');
+                if (input) setTimeout(() => input.focus(), 50);
+                win.addEventListener('click', (e) => {
+                    if (e.target.closest('.titlebar')) return;
+                    const input2 = document.getElementById('termIn');
+                    if (input2) input2.focus();
+                });
+            }
+            if (id === 'radio') initRadio();
+
+            const bar = win.querySelector('.titlebar');
+            let dx, dy, dragging = false;
+            bar.addEventListener('mousedown', (e) => {
+                dragging = true;
+                dx = e.clientX - win.offsetLeft;
+                dy = e.clientY - win.offsetTop;
+                win.style.zIndex = ++zIndex;
+            });
+            document.addEventListener('mousemove', (e) => {
+                if (dragging) {
+                    win.style.left = (e.clientX - dx) + 'px';
+                    win.style.top = (e.clientY - dy) + 'px';
+                }
+            });
+            document.addEventListener('mouseup', () => { dragging = false; });
+        }
+
+        function minimizeWindow(id) {
+            const win = document.getElementById(id);
+            if (win) {
+                win.classList.remove('active');
+                win.style.display = 'none';
+                updateTaskbarActive(id);
+            }
+        }
+
+        function closeWindow(id) {
+            const win = document.getElementById(id);
+            if (win) {
+                if (id === 'radio') {
+                    stopRadio();
+                    if (window._radioResizeObserver) {
+                        window._radioResizeObserver.disconnect();
+                        window._radioResizeObserver = null;
+                    }
+                }
+                win.remove();
+                const tbItem = document.getElementById('tb-' + id);
+                if (tbItem) tbItem.remove();
+            }
+        }
+
+        function updateTaskbarActive(id) {
+            document.querySelectorAll('.item').forEach(el => el.classList.remove('active'));
+            const tbItem = document.getElementById('tb-' + id);
+            const win = document.getElementById(id);
+            if (tbItem && win && win.classList.contains('active')) {
+                tbItem.classList.add('active');
+            }
+        }
+
+        // ==========================================================================
+        // APLICATIVOS ADICIONAIS
+        // ==========================================================================
+        function openSysInfo() {
+            const uptime = Math.floor((Date.now() - world.startTime) / 1000);
+            const hours = Math.floor(uptime / 3600);
+            const minutes = Math.floor((uptime % 3600) / 60);
+            const seconds = uptime % 60;
+            const cpuUsage = (Math.random() * 20 + 80).toFixed(1);
+            const memTotal = 1024;
+            const memUsed = Math.floor(Math.random() * 200 + 400);
+            const memFree = memTotal - memUsed;
+            const portalPid = Math.floor(Math.random() * 1000 + 1000);
+
+            const html = `
+                <div style="font-family:'VT323'; font-size:1.1em; color:#00ff41;">
+                    <p><strong>Sistema:</strong> LUGAR OS 2000</p>
+                    <p><strong>Uptime:</strong> ${hours}h ${minutes}m ${seconds}s</p>
+                    <p><strong>CPU:</strong> ${cpuUsage}% (processo portal: ${portalPid})</p>
+                    <p><strong>Memória:</strong> ${memUsed}MB / ${memTotal}MB (${memFree}MB livres)</p>
+                    <p><strong>Disco:</strong> /dev/sda1 2.0G 1.2G 800M 60% /</p>
+                    <p><strong>Processos:</strong> 42, 1 zombie</p>
+                    <hr style="border-color:#00ff41;">
+                    <p style="color:#555; font-size:0.8em;">Última atualização: 31/12/1999 23:59:59</p>
+                </div>
+            `;
+            createWindow('sysinfo', 'SISTEMA', 400, 320, html);
+        }
+
+        function openArchive() {
+            const files = ['segredo.crypt', 'mapa.crypt', 'diario.crypt'];
+            let html = `<div style="color:#00ff41; font-family:'VT323'; font-size:1.2em;">`;
+            files.forEach(f => {
+                html += `<p>${f} <button onclick="alert('Use decode --crypt ${f} <chave>')">Decifrar</button></p>`;
+            });
+            html += `</div>`;
+            createWindow('archive', 'ARQUIVO', 400, 300, html);
+        }
+
+        function openEmail() {
+            const messages = [
+                { from: 'admin@ressonancia.com.br', subject: 'Bem-vindo', body: 'Você tem acesso ao sistema. Explore com cuidado.' },
+                { from: 'portal@2000.projeto', subject: 'Sinal detectado', body: 'A porta está na frequência 1999. Use o rádio.' },
+                { from: 'suporte@ressonancia.com.br', subject: 'Manutenção', body: 'O sistema será reiniciado em 31/12/1999.' },
+            ];
+            let html = `<div style="color:#00ff41; font-family:'VT323'; font-size:1em;">`;
+            messages.forEach((msg, i) => {
+                html += `<div style="border:1px solid #00ff41; padding:5px; margin:5px 0;">
+                    <strong>De:</strong> ${msg.from}<br>
+                    <strong>Assunto:</strong> ${msg.subject}<br>
+                    <p>${msg.body}</p>
+                </div>`;
+            });
+            html += `</div>`;
+            createWindow('email', 'EMAIL', 450, 350, html);
+        }
+
+        // ==========================================================================
+        // MAPA INTERATIVO
+        // ==========================================================================
+        function openMap() {
+            let markers = `<div style="color:#aaa; text-align:center; margin-top:20px;">Coordenadas não encontradas.</div>`;
+            if (world.portalFound) {
+                markers = `
+                    <div style="display:flex; flex-direction:column; gap:15px; margin-top:15px;">
+                        <div style="border:1px solid #00ff41; padding:10px; background:#001100; color:#00ff41;">
+                            <strong>PORTAL</strong><br>
+                            <span style="color:#ff0000;">20°00'00"N 0°00'00"E</span><br>
+                            <span style="font-size:0.8em; color:#888;">Marcador ativo.</span>
+                        </div>
+                        <div style="border:1px solid #ff00ff; padding:10px; background:#0f000f; color:#ff00ff;">
+                            <strong>DATA DE ATIVAÇÃO</strong><br>
+                            <span style="color:#ff00ff;">31/12/1999</span><br>
+                            <span style="font-size:0.8em; color:#888;">A porta se abrirá neste ponto.</span>
+                        </div>
+                    </div>
+                `;
+            }
+            const html = `
+                <div style="font-family:'VT323'; font-size:1.1em; color:#00ff41;">
+                    <p><strong>🗺️ Mapa do Projeto 2000</strong></p>
+                    <p style="font-size:0.8em; color:#888;">Coordenadas registradas nos arquivos da Ressonância.</p>
+                    <hr style="border-color:#00ff41;">
+                    ${markers}
+                </div>
+            `;
+            createWindow('map', 'MAPA', 400, 350, html);
+        }
+
+        // ==========================================================================
+        // TERMINAL - COMANDOS EXPANDIDOS
+        // ==========================================================================
+        function initTerminal() {
+            const input = document.getElementById('termIn');
+            const out = document.getElementById('termOut');
+            if (!input || !out) return;
+
+            out.innerHTML = `> Sistema de arquivos montado.<br><span style="color:#555;font-size:0.8em;">Dica: comandos comuns funcionam aqui.</span>`;
+
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const cmd = input.value.trim();
+                    input.value = '';
+                    history.push(cmd);
+                    saveWorld();
+                    out.innerHTML += `<br><span style="color:#ffff00;">> ${cmd}</span><br>`;
+                    let response = processCommand(cmd);
+                    if (response !== null) {
+                        out.innerHTML += `<br>${response}`;
+                    }
+                    out.scrollTop = out.scrollHeight;
+                    playKeyClick();
+                }
+            });
+        }
+
+        function processCommand(cmd) {
+            const parts = cmd.trim().split(/\s+/);
+            if (parts.length === 0) return null;
+            const c = parts[0].toLowerCase();
+            const args = parts.slice(1);
+
+            if (world.isFrozen) {
+                if (c === 'date') return '00:00:00';
+                if (c === 'whoami') return 'desconhecido';
+                if (c === 'ping') return 'destino inalcançável';
+            }
+
+            if (world.radioPlaying && Math.random() > 0.7) {
+                const corruptedReplies = [
+                    `[estática] ${c} não reconhecido.`,
+                    `[erro] comando ${c} corrompido.`,
+                    `[sinal] ${c}???`,
+                    `[interferência] tente novamente.`
+                ];
+                return corruptedReplies[Math.floor(Math.random() * corruptedReplies.length)];
+            }
+
+            switch(c) {
+                case 'help':
+                    let help = 'Comandos: ls, cat, date, clear, history, whoami, find, ping, grep, tail, diff, chmod, man, uptime, df, free, uname, who, env, echo, complete, diario, jogo, tree, top, zip, save, crash, shutdown, portal, 1999, sintonizar, aurora, loop, meta, reboot';
+                    if (world.radioSynced) help += ' (Sistema em modo π)';
+                    return help;
+                case 'ls':
+                    if (args.includes('-la')) {
+                        let files = 'bin   etc   var   mnt   tmp   .secret   proc   dev';
+                        if (world.radioSynced) files += '   radio.log';
+                        if (world.calendarMarked || world.calendarMarked24) files += '   portal.key';
+                        if (world.calendarMarked12) files += '   note12.txt';
+                        if (world.calendarMarked1) files += '   note1.txt';
+                        if (world.calendarMarked6) files += '   note6.txt';
+                        if (world.logReadAfterMark && world.calendarMarked) {
+                            files += '   diario_do_administrador.txt';
+                        }
+                        return files;
+                    }
+                    return 'bin   etc   var   mnt   tmp   proc   dev';
+                case 'cat':
+                    if (args.length < 2) return 'cat: arquivo não especificado.';
+                    const file = args[1];
+                    if (file === 'hosts') {
+                        return world.radioSynced ? '127.0.0.1 localhost\n200.0.0.1 gateway.portal\n# SINAL DETECTADO EM 1999. A PORTA ESTÁ PERTO.' : '127.0.0.1 localhost\n200.0.0.1 gateway.portal';
+                    } else if (file === 'syslog') {
+                        let log = '1999-12-24 23:59:59 [ERROR] gateway.portal inacessível.\n1999-12-31 00:00:00 [CRITICAL] Anomalia detectada.';
+                        if (world.calendarMarked24) log += '\n1999-12-24 23:59:59 [INFO] Conexão tentada.';
+                        if (world.calendarMarked && !world.logReadAfterMark) {
+                            world.logReadAfterMark = true;
+                            saveWorld();
+                            log += '\n1999-12-31 23:59:59 [INFO] A linha do tempo foi alterada.';
+                        }
+                        if (world.calendarMarked1) log += '\n1999-12-01 00:00:00 [INFO] Início do último mês de 1999.';
+                        return log;
+                    } else if (file === 'radio.log') {
+                        return world.radioSynced ? 'Frequência 1999 Hz capturada.\nSinal: π.' : 'Arquivo não encontrado.';
+                    } else if (file === 'portal.key') {
+                        return (world.calendarMarked || world.calendarMarked24) ? 'CHAVE: 2000_REVERSE' : 'Arquivo não encontrado.';
+                    } else if (file === '.secret') {
+                        return (world.radioSynced && world.calendarMarked) ? 'Você encontrou o segredo.\nO portal não é uma porta. É um reflexo.' : 'Arquivo não encontrado.';
+                    } else if (file === 'note12.txt') {
+                        return world.calendarMarked12 ? '12/12/1999 - O número do portal é 2000.' : 'Arquivo não encontrado.';
+                    } else if (file === 'note1.txt') {
+                        return world.calendarMarked1 ? '01/12/1999 - O último mês começa. A contagem regressiva começa.' : 'Arquivo não encontrado.';
+                    } else if (file === 'note6.txt') {
+                        return world.calendarMarked6 ? '06/12/1999 - A frequência correta é 1999.' : 'Arquivo não encontrado.';
+                    } else if (file === 'config.ini') {
+                        return 'PORTAL_PORT=1999\nFREQUENCY=???\nSESSION_KEY=???';
+                    } else if (file === 'version') {
+                        return 'Linux version 2.6.10-2000 (root@portal) (gcc version 3.2.3) #1 SMP Tue Dec 31 23:59:59 GMT 1999';
+                    } else if (file === 'cpuinfo') {
+                        return 'processor: 0\nvendor_id: GenuineIntel\ncpu family: 6\nmodel: 8\nmodel name: Pentium III\nstepping: 3\ncpu MHz: 600.000\ncache size: 256 KB';
+                    } else if (file === 'random') {
+                        return 'Conteúdo aleatório: ' + Math.random().toString(36).substring(2, 10) + '...';
+                    } else if (file === 'diario_do_administrador.txt') {
+                        if (world.logReadAfterMark && world.calendarMarked) {
+                            if (!world.adminDiaryUnlocked) {
+                                world.adminDiaryUnlocked = true;
+                                saveWorld();
+                            }
+                            return '... O administrador deixou uma última anotação em 31/12/1999:\n\n"Eles não querem que abramos a porta, mas eu deixei a chave no rádio.\nFoi tudo o que pude fazer. Não deixe que eles apaguem o que encontramos."\n\n- M.';
+                        } else {
+                            return 'Arquivo não encontrado.';
+                        }
+                    } else {
+                        return `cat: ${file}: arquivo não encontrado.`;
+                    }
+                case 'date':
+                    return world.isFrozen ? '00:00:00' : '31/12/1999 23:59:59';
+                case 'clear':
+                    const out = document.getElementById('termOut');
+                    if (out) out.innerHTML = '';
+                    return null;
+                case 'history':
+                    if (args.includes('-c')) {
+                        history = [];
+                        return 'Histórico limpo.';
+                    }
+                    return history.map((h, i) => ` ${i+1}  ${h}`).join('\n') || 'Nenhum comando registrado.';
+                case 'whoami':
+                    return world.radioSynced ? 'π' : 'root';
+                case 'find':
+                    if (args.length < 2 || args[0] !== '/' || args[1] !== '-name') return 'find: uso: find / -name "padrão"';
+                    const pattern = args.slice(2).join(' ').replace(/^"|"$/g, '');
+                    let results = [];
+                    const patternRegex = pattern.replace(/\*/g, '.*');
+                    const regex = new RegExp('^' + patternRegex + '$');
+                    const allFiles = ['/var/log/syslog', '/tmp/radio.log', '/tmp/portal.key', '/etc/.secret', '/tmp/note12.txt', '/proc/version', '/proc/cpuinfo', '/dev/random', '/tmp/note1.txt', '/tmp/note6.txt'];
+                    if (world.logReadAfterMark && world.calendarMarked) {
+                        allFiles.push('/tmp/diario_do_administrador.txt');
+                    }
+                    for (let f of allFiles) {
+                        if (regex.test(f)) results.push(f);
+                    }
+                    return results.length ? results.join('\n') : 'Nenhum arquivo encontrado.';
+                case 'ping':
+                    if (args.length === 0) return 'ping: uso: ping <host>';
+                    const host = args[0];
+                    if (host === 'gateway.portal') {
+                        return world.radioSynced ? 'PING gateway.portal (200.0.0.1): 56 bytes.\n64 bytes de 200.0.0.1: tempo=12.3 ms\nSinal estável.' : 'PING gateway.portal (200.0.0.1): destino inalcançável.';
+                    }
+                    return 'PING: host desconhecido.';
+                case 'grep':
+                    if (args.length < 2) return 'grep: uso: grep <padrão> <arquivo>';
+                    const patternGrep = args[0];
+                    const fileGrep = args[1];
+                    if (fileGrep === 'syslog') {
+                        const content = processCommand(`cat syslog`);
+                        if (typeof content === 'string') {
+                            const lines = content.split('\n').filter(line => line.includes(patternGrep));
+                            if (lines.length > 0 && world.radioSynced && patternGrep.toLowerCase().includes('portal')) {
+                                return lines.join('\n') + '\n1999-12-31 23:59:59 [INFO] Portal gateway respondendo em 200.0.0.1:1999';
+                            }
+                            return lines.join('\n') || 'Nenhuma ocorrência.';
+                        }
+                    }
+                    return 'grep: arquivo não suportado.';
+                case 'tail':
+                    if (args.length < 2) return 'tail: uso: tail -n <N> <arquivo>';
+                    const n = parseInt(args[0]);
+                    const fileTail = args[1];
+                    if (fileTail === 'syslog') {
+                        const content = processCommand(`cat syslog`);
+                        if (typeof content === 'string') {
+                            const lines = content.split('\n').slice(-n);
+                            return lines.join('\n');
+                        }
+                    }
+                    return 'tail: arquivo não suportado.';
+                case 'diff':
+                    if (args.length < 2) return 'diff: uso: diff <arquivo1> <arquivo2>';
+                    const file1 = args[0];
+                    const file2 = args[1];
+                    const content1 = processCommand(`cat ${file1}`);
+                    const content2 = processCommand(`cat ${file2}`);
+                    if (typeof content1 === 'string' && typeof content2 === 'string') {
+                        if (content1 === content2) return 'Arquivos idênticos.';
+                        else return 'Arquivos diferentes.';
+                    }
+                    return 'diff: erro ao comparar.';
+                case 'chmod':
+                    if (args.length < 2) return 'chmod: uso: chmod <perm> <arquivo>';
+                    return `chmod: permissões alteradas para ${args[0]} em ${args[1]}. (Simulado)`;
+                case 'man':
+                    if (args.length === 0) return 'man: uso: man <comando>';
+                    const manCmd = args[0];
+                    const manPages = {
+                        'ls': 'ls - lista arquivos do diretório.',
+                        'cat': 'cat - exibe o conteúdo de um arquivo.',
+                        'grep': 'grep - busca padrões em arquivos.',
+                        'tail': 'tail - exibe as últimas linhas de um arquivo.',
+                        'diff': 'diff - compara dois arquivos.',
+                        'chmod': 'chmod - altera permissões de arquivos (simulado).',
+                        'ping': 'ping - testa conectividade de rede.',
+                        'uptime': 'uptime - mostra tempo de atividade.',
+                        'df': 'df - mostra uso do disco.',
+                        'free': 'free - mostra uso da memória.',
+                        'uname': 'uname - informações do sistema.',
+                        'who': 'who - lista usuários logados.',
+                        'env': 'env - exibe variáveis de ambiente.',
+                        'echo': 'echo $VAR - exibe uma variável de ambiente.',
+                        'tree': 'tree - exibe a estrutura de diretórios.',
+                        'top': 'top - exibe processos do sistema.',
+                        'zip': 'zip - compacta um arquivo (simulado).',
+                        'save': 'save - salva manualmente o progresso.'
+                    };
+                    return manPages[manCmd] || 'Página de manual não encontrada.';
+                case 'uptime':
+                    const up = Math.floor((Date.now() - world.startTime) / 1000);
+                    const h = Math.floor(up / 3600);
+                    const m = Math.floor((up % 3600) / 60);
+                    const s = up % 60;
+                    return `uptime: ${h}h ${m}m ${s}s, load average: 0.00, 0.01, 0.05`;
+                case 'df':
+                    if (args.includes('-h')) {
+                        return `Filesystem      Size  Used Avail Use% Mounted on\n/dev/sda1       2.0G  1.2G  800M  60% /\n/dev/sda2       500M  100M  400M  20% /boot\nportal:/        infinite  --    --   --  /portal`;
+                    }
+                    return 'df: use df -h';
+                case 'free':
+                    if (args.includes('-m')) {
+                        return `              total        used        free\nMem:           1024         512         512\nSwap:           256           0         256`;
+                    }
+                    return 'free: use free -m';
+                case 'uname':
+                    if (args.includes('-a')) {
+                        return 'Linux portal 2.6.10-2000 #1 SMP Tue Dec 31 23:59:59 GMT 1999 i686 unknown';
+                    }
+                    if (args.includes('-r')) {
+                        return '2.6.10-2000';
+                    }
+                    return 'uname: use uname -a ou uname -r';
+                case 'who':
+                    return 'root     pts/0        Dec 31 23:59\nportal   ?            Dec 31 00:00 (não identificado)';
+                case 'env':
+                    let envVars = 'PORTAL_GATEWAY=200.0.0.1\nPORTAL_PORT=1999\nSESSION_KEY=???\nUSER=root\nHOME=/root\nPATH=/bin:/usr/bin:/usr/local/bin\n';
+                    if (world.radioSynced) envVars += 'FREQUENCY=1999\nSIGNAL=π\n';
+                    return envVars;
+                case 'echo':
+                    if (args[0] === '$PORTAL_GATEWAY') {
+                        return '200.0.0.1';
+                    } else if (args[0] === '$PORTAL_PORT') {
+                        return '1999';
+                    } else if (args[0] === '$SESSION_KEY') {
+                        return '??? (encontre a chave)';
+                    } else if (args[0] === '$FREQUENCY' && world.radioSynced) {
+                        return '1999';
+                    } else {
+                        return args.join(' ');
+                    }
+                case 'complete':
+                    const allCommands = ['help','ls','cat','date','clear','history','whoami','find','ping','grep','tail','diff','chmod','man','uptime','df','free','uname','who','env','echo','tree','top','zip','save','crash','shutdown','portal','1999','sintonizar','aurora','loop','meta','reboot','jogo','diario','decode'];
+                    const used = history.map(h => h.split(' ')[0].toLowerCase());
+                    const missing = allCommands.filter(cmd => !used.includes(cmd));
+                    if (missing.length === 0) {
+                        triggerFinal('MESTRE', 'Você dominou todos os comandos. O sistema reconhece seu conhecimento.');
+                    } else {
+                        return `Ainda falta você usar: ${missing.join(', ')}`;
+                    }
+                    return null;
+                case 'diario':
+                    const notes = document.getElementById('notepadContent');
+                    if (notes) {
+                        notes.value += `\n\n--- DIÁRIO DE INVESTIGAÇÃO ---\n` +
+                            `- Rádio: ${world.radioSynced ? 'Sincronizado' : 'Não sincronizado'}\n` +
+                            `- Calendário: ${world.calendarMarked ? 'Marcado (31)' : 'Não marcado'}\n` +
+                            `- IE: ${world.ieReopened ? 'Data alterada' : 'Original'}\n` +
+                            `- Comandos usados: ${history.length}`;
+                        return 'Diário atualizado no bloco de notas.';
+                    }
+                    return 'Bloco de notas não aberto.';
+                case 'jogo':
+                    return ticTacToe(args);
+                case 'decode':
+                    if (args[0] === '--crypt') {
+                        const file = args[1];
+                        const key = args.slice(2).join(' ');
+                        if (file === 'segredo.crypt' && key === '2000_REVERSE') {
+                            return 'Decodificado: "O portal está em 2000.REVERSE. A porta se abre em 31/12/1999."';
+                        } else if (file === 'mapa.crypt' && key === '1999') {
+                            return 'Decodificado: "As coordenadas do portal: 20°00\'00"N 0°00\'00"E."';
+                        } else if (file === 'diario.crypt' && key === 'portal') {
+                            return 'Decodificado: "O computador sabe que você está aqui. Ele está esperando."';
+                        }
+                        return 'Chave incorreta ou arquivo não encontrado.';
+                    }
+                    return 'Uso: decode --crypt <arquivo> <chave>';
+                case 'tree':
+                    return `.
+├── bin
+│   └── decode
+├── etc
+│   ├── hosts
+│   └── config.ini
+├── var
+│   └── log
+│       └── syslog
+├── mnt
+├── tmp
+├── .secret
+├── proc
+│   ├── version
+│   └── cpuinfo
+└── dev
+    └── random`;
+                case 'top':
+                    const portalPid = Math.floor(Math.random() * 1000 + 1000);
+                    return `  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+  1 root      20   0  123M  12M  8M S  0.0  1.2   0:00.01 init
+  ${portalPid} root      20   0  2.5G 500M 200M S 99.9 50.0   2:42.17 portal
+  42 root      20   0  45M  20M  5M S  0.3  2.0   0:00.05 bash`;
+                case 'zip':
+                    if (args.length < 2) return 'zip: uso: zip <arquivo> <destino>';
+                    return `Arquivo ${args[0]} compactado com sucesso em ${args[1]}.zip. (Simulado)`;
+                case 'save':
+                    saveWorld();
+                    return 'Progresso salvo manualmente com sucesso.';
+                case 'aurora':
+                    if (world.radioSynced && world.calendarMarked) {
+                        triggerFinal('AURORA', 'Você descobriu o nome do instituto de pesquisa. O portal sempre esteve lá. Aurora era o verdadeiro nome do projeto.');
+                    } else {
+                        return 'Você precisa de mais pistas para acessar este final.';
+                    }
+                    return null;
+                case 'crash':
+                    triggerBSOD();
+                    return null;
+                case 'shutdown':
+                    triggerFinal('DESLIGAMENTO', 'Você desligou o sistema. O portal se fechou.');
+                    return null;
+                case 'portal':
+                    if (world.radioSynced && world.calendarMarked && world.ieReopened) {
+                        triggerFinal('PORTAL', 'Você desbloqueou o portal. O ano 2000 se torna eterno.');
+                    } else {
+                        return 'ACESSO NEGADO. Sinal instável.';
+                    }
+                    return null;
+                case '1999':
+                    if (world.calendarMarked) {
+                        triggerFinal('VIAJANTE', 'Você viajou para 31/12/1999. O portal se abriu.');
+                    } else {
+                        return 'Você precisa marcar o calendário primeiro.';
+                    }
+                    return null;
+                case 'sintonizar':
+                    if (world.radioSynced) {
+                        triggerFinal('SINTONIA', 'Você sintonizou a frequência correta. O rádio responde.');
+                    } else {
+                        return 'Você precisa sintonizar o rádio em 1999 Hz.';
+                    }
+                    return null;
+                case 'loop':
+                    location.reload();
+                    return null;
+                case 'meta':
+                    triggerFinal('META', 'Você quebrou a quarta parede. O sistema reconhece você.');
+                    return null;
+                case 'reboot':
+                    if (document.querySelector('.bsod.active')) {
+                        location.reload();
+                    } else {
+                        return 'Comando disponível apenas durante o BSOD.';
+                    }
+                    return null;
+                default:
+                    world.invalidCommands++;
+                    if (world.invalidCommands > 5) {
+                        return 'Você realmente está tentando?';
+                    }
+                    return `comando '${c}' não reconhecido.`;
+            }
+        }
+
+        // ==========================================================================
+        // JOGO DA VELHA
+        // ==========================================================================
+        let tttBoard = ['', '', '', '', '', '', '', '', ''];
+        let tttTurn = 'X';
+        let tttGameOver = false;
+
+        function ticTacToe(args) {
+            if (args.length === 0) {
+                return 'Jogo da velha. Use "jogo <posição>" (1-9) para jogar.\nEx: jogo 5\nTabuleiro:\n' + renderBoard();
+            }
+            const pos = parseInt(args[0]) - 1;
+            if (isNaN(pos) || pos < 0 || pos > 8 || tttBoard[pos] !== '') {
+                return 'Posição inválida ou ocupada.';
+            }
+            if (tttGameOver) {
+                tttBoard = ['', '', '', '', '', '', '', '', ''];
+                tttTurn = 'X';
+                tttGameOver = false;
+                return 'Novo jogo iniciado.';
+            }
+            tttBoard[pos] = 'X';
+            if (checkWin('X')) {
+                tttGameOver = true;
+                return 'Você venceu! Parabéns! (Isso é estranho...)';
+            }
+            if (tttBoard.every(cell => cell !== '')) {
+                tttGameOver = true;
+                return 'Empate! (O computador não perde.)';
+            }
+            let bestMove = minimax(tttBoard, 'O').index;
+            if (bestMove !== undefined) {
+                tttBoard[bestMove] = 'O';
+            }
+            if (checkWin('O')) {
+                tttGameOver = true;
+                return 'O computador venceu! (Como esperado.)\n' + renderBoard();
+            }
+            if (tttBoard.every(cell => cell !== '')) {
+                tttGameOver = true;
+                return 'Empate! (O computador não perde.)\n' + renderBoard();
+            }
+            return 'Sua vez:\n' + renderBoard();
+        }
+
+        function renderBoard() {
+            let board = '';
+            for (let i = 0; i < 9; i++) {
+                board += (tttBoard[i] || ' ') + ' ';
+                if (i % 3 === 2) board += '\n';
+            }
+            return board;
+        }
+
+        function checkWin(player) {
+            const winPatterns = [
+                [0,1,2], [3,4,5], [6,7,8],
+                [0,3,6], [1,4,7], [2,5,8],
+                [0,4,8], [2,4,6]
+            ];
+            return winPatterns.some(pattern => pattern.every(i => tttBoard[i] === player));
+        }
+
+        function minimax(board, player) {
+            const available = board.map((v, i) => v === '' ? i : null).filter(v => v !== null);
+            if (checkWin('X')) return { score: -10 };
+            if (checkWin('O')) return { score: 10 };
+            if (available.length === 0) return { score: 0 };
+            const moves = [];
+            for (let i of available) {
+                const move = { index: i };
+                board[i] = player;
+                const result = minimax(board, player === 'O' ? 'X' : 'O');
+                move.score = result.score;
+                board[i] = '';
+                moves.push(move);
+            }
+            if (player === 'O') {
+                const best = moves.reduce((best, move) => move.score > best.score ? move : best, { score: -Infinity });
+                return best;
+            } else {
+                const best = moves.reduce((best, move) => move.score < best.score ? move : best, { score: Infinity });
+                return best;
+            }
+        }
+
+        // ==========================================================================
+        // RÁDIO
+        // ==========================================================================
+        function initRadio() {
+            const canvas = document.getElementById('radioCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const slider = document.getElementById('freqSlider');
+            const display = document.getElementById('freqDisplay');
+
+            function resizeCanvas() {
+                const parent = canvas.parentNode;
+                const rect = parent.getBoundingClientRect();
+                const containerWidth = rect.width - 4;
+                canvas.width = containerWidth;
+                canvas.height = 100;
+            }
+
+            resizeCanvas();
+            const resizeObserver = new ResizeObserver(() => resizeCanvas());
+            resizeObserver.observe(canvas.parentNode);
+            window._radioResizeObserver = resizeObserver;
+
+            function draw() {
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                const freq = parseInt(slider.value);
+                display.innerText = freq + ' Hz';
+                for (let x = 0; x < canvas.width; x++) {
+                    const y = canvas.height/2 + Math.sin(x * 0.02 + freq * 0.001) * 20;
+                    ctx.fillStyle = `hsl(${x * 0.5 + freq/10}, 100%, 50%)`;
+                    ctx.fillRect(x, y, 1, 1);
+                }
+                if (world.radioSynced) {
+                    ctx.fillStyle = '#ff00ff';
+                    ctx.font = '10px monospace';
+                    ctx.fillText('—', canvas.width/2, 50);
+                }
+                if (world.radioPlaying) {
+                    ctx.fillStyle = 'rgba(255,255,255,0.05)';
+                    ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, 10, 10);
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        function toggleRadio() {
+            if (world.radioPlaying) {
+                stopRadio();
+                const btn = document.querySelector('#radio .body button');
+                if (btn) btn.innerText = 'LIGAR';
+                const status = document.getElementById('radioStatus');
+                if (status) status.innerText = 'Estático';
+                return;
+            }
+            
+            const slider = document.getElementById('freqSlider');
+            if (!slider) return;
+            const freq = parseInt(slider.value);
+
+            if (world.radioCtx && world.radioCtx.state === 'suspended') {
+                world.radioCtx.resume();
+            }
+
+            if (freq >= 1995 && freq <= 2005) {
+                if (!world.radioSynced) {
+                    world.radioSynced = true;
+                    saveWorld();
+                    document.querySelectorAll('.titlebar .sysicon').forEach(el => {
+                        el.innerText = 'π';
+                        el.classList.add('synced');
+                    });
+                    playTune();
+                }
+                const status = document.getElementById('radioStatus');
+                if (status) status.innerText = 'Sinal π captado.';
+            } else {
+                world.radioSynced = false;
+                const status = document.getElementById('radioStatus');
+                if (status) status.innerText = 'Estático';
+                document.querySelectorAll('.titlebar .sysicon').forEach(el => {
+                    el.innerText = '●';
+                    el.classList.remove('synced');
+                });
+            }
+
+            if (!world.radioCtx) world.radioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            world.radioOsc = world.radioCtx.createOscillator();
+            world.radioGain = world.radioCtx.createGain();
+            world.radioOsc.type = 'sawtooth';
+            world.radioOsc.frequency.value = freq;
+            world.radioGain.gain.value = 0.03;
+            world.radioOsc.connect(world.radioGain);
+            world.radioGain.connect(world.radioCtx.destination);
+            world.radioOsc.start();
+
+            world.radioPlaying = true;
+            const btn = document.querySelector('#radio .body button');
+            if (btn) btn.innerText = 'DESLIGAR';
+        }
+
+        function stopRadio() {
+            if (world.radioOsc) { 
+                try { world.radioOsc.stop(); } catch(e) {}
+                world.radioOsc = null; 
+            }
+            if (window._radioAnimFrame) {
+                cancelAnimationFrame(window._radioAnimFrame);
+                window._radioAnimFrame = null;
+            }
+            world.radioPlaying = false;
+        }
+
+        // ==========================================================================
+        // CALENDÁRIO
+        // ==========================================================================
+        function getRealDateMessage() {
+            const now = new Date();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+            if (month === 12 && day === 24) {
+                return { message: '🎄 24/12 – Véspera de Natal. O sistema parece mais quieto hoje.', color: '#00ff41' };
+            } else if (month === 12 && day === 25) {
+                return { message: '🎅 25/12 – Natal. O portal está silencioso. Ou será que não?', color: '#ff00ff' };
+            } else if (month === 12 && day === 31) {
+                return { message: '🎆 31/12 – Virada do milênio. O portal está prestes a se abrir.', color: '#ff0000' };
+            } else if (month === 12 && day === 1) {
+                return { message: '📅 01/12 – Início do último mês de 1999. O tempo está se esgotando.', color: '#00ffff' };
+            }
+            return null;
+        }
+
+        function buildCalendarHTML() {
+            const realMsg = getRealDateMessage();
+            let headerMsg = '';
+            if (realMsg) {
+                headerMsg = `<div style="color:${realMsg.color}; text-align:center; margin-bottom:10px; font-size:1.1em; border:1px solid ${realMsg.color}; padding:5px; background:rgba(0,0,0,0.5);">${realMsg.message}</div>`;
+            }
+            const startDay = 3;
+            let grid = `<div class="calendar-grid">`;
+            ['Dom','Seg','Ter','Qua','Qui','Sex','Sab'].forEach(d => grid += `<span style="font-weight:bold;">${d}</span>`);
+            grid += `</div>`;
+            let dayCount = 0;
+            for (let row = 0; row < 6; row++) {
+                grid += `<div class="calendar-grid">`;
+                for (let col = 0; col < 7; col++) {
+                    if (row === 0 && col < 3) {
+                        grid += `<span></span>`;
+                    } else if (dayCount < 31) {
+                        dayCount++;
+                        let extra = '';
+                        let onclick = '';
+                        if (dayCount === 31 && world.calendarMarked) {
+                            extra = ' style="color:#00ff41; font-weight:bold;"';
+                        } else if (dayCount === 31) {
+                            onclick = ` onclick="calendarClick(31)"`;
+                            extra = ' class="calendar-day" style="color:#ff0000;"';
+                        } else if (dayCount === 24 && world.calendarMarked24) {
+                            extra = ' style="color:#00ff41; font-weight:bold;"';
+                        } else if (dayCount === 24) {
+                            onclick = ` onclick="calendarClick(24)"`;
+                            extra = ' class="calendar-day" style="color:#ffff00;"';
+                        } else if (dayCount === 12 && world.calendarMarked12) {
+                            extra = ' style="color:#00ff41; font-weight:bold;"';
+                        } else if (dayCount === 12) {
+                            onclick = ` onclick="calendarClick(12)"`;
+                            extra = ' class="calendar-day" style="color:#00ffff;"';
+                        } else if (dayCount === 25 && world.calendarMarked25) {
+                            extra = ' style="color:#ff00ff; font-weight:bold;"';
+                        } else if (dayCount === 25) {
+                            onclick = ` onclick="calendarClick(25)"`;
+                            extra = ' class="calendar-day" style="color:#ff00ff;"';
+                        } else if (dayCount === 1 && world.calendarMarked1) {
+                            extra = ' style="color:#00ffff; font-weight:bold;"';
+                        } else if (dayCount === 1) {
+                            onclick = ` onclick="calendarClick(1)"`;
+                            extra = ' class="calendar-day" style="color:#00ffff;"';
+                        } else if (dayCount === 6 && world.calendarMarked6) {
+                            extra = ' style="color:#00ffff; font-weight:bold;"';
+                        } else if (dayCount === 6) {
+                            onclick = ` onclick="calendarClick(6)"`;
+                            extra = ' class="calendar-day" style="color:#00ffff;"';
+                        }
+                        grid += `<span${extra}${onclick}>${dayCount}</span>`;
+                    } else {
+                        grid += `<span></span>`;
+                    }
+                }
+                grid += `</div>`;
+            }
+            return headerMsg + grid;
+        }
+
+        function calendarClick(day) {
+            if (day === 31 && !world.calendarMarked) {
+                world.calendarMarked = true;
+                saveWorld();
+                updateCalendar();
+            } else if (day === 24 && !world.calendarMarked24) {
+                world.calendarMarked24 = true;
+                saveWorld();
+                updateCalendar();
+            } else if (day === 12 && !world.calendarMarked12) {
+                world.calendarMarked12 = true;
+                saveWorld();
+                updateCalendar();
+            } else if (day === 25 && !world.calendarMarked25) {
+                world.calendarMarked25 = true;
+                saveWorld();
+                updateCalendar();
+                const out = document.getElementById('termOut');
+                if (out) out.innerHTML += `<br><span style="color:#ff00ff;">[SYS] 25/12 – O silêncio é ensurdecedor.</span>`;
+            } else if (day === 1 && !world.calendarMarked1) {
+                world.calendarMarked1 = true;
+                saveWorld();
+                updateCalendar();
+            } else if (day === 6 && !world.calendarMarked6) {
+                world.calendarMarked6 = true;
+                saveWorld();
+                updateCalendar();
+            }
+        }
+
+        function updateCalendar() {
+            const container = document.getElementById('calContainer');
+            if (container) {
+                container.innerHTML = `<h3 style="text-align:center; color:#ffff00; margin-bottom:10px;">DEZEMBRO 1999</h3>${buildCalendarHTML()}`;
+            }
+        }
+
+        // ==========================================================================
+        // BSOD E FINAIS
+        // ==========================================================================
+        function triggerBSOD() {
+            const bsod = document.getElementById('bsod');
+            if (!bsod) {
+                const bsodDiv = document.createElement('div');
+                bsodDiv.className = 'bsod active';
+                bsodDiv.id = 'bsod';
+                bsodDiv.innerHTML = `
+                    <div style="font-family:'VT323'; font-size:1.2em; max-width:700px; text-align:left;">
+                        <div style="font-family:'Press Start 2P'; font-size:2.5em; color:#fff; margin-bottom:20px;">:(</div>
+                        <div style="font-size:1.5em; color:#fff; margin-bottom:15px;">O sistema encontrou um problema e precisa ser reiniciado.</div>
+                        <div style="color:#ffff00; margin:15px 0;">ERRO: Y2K_CRITICAL_FAILURE (0x00002000)</div>
+                        <div style="font-size:0.9em; color:#ccc; line-height:1.5;">
+                            <p>Informações técnicas:</p>
+                            <p>*** STOP: 0x0000007E (0x80000003, 0x8055B5A0, 0xF79D84A4, 0xF79D81A4)</p>
+                            <p>PROJETO_2000.SYS - Endereço F79D84A4 base em F79D7000</p>
+                            <div style="margin-top:20px;">
+                                <p>Despejando memória física... <span id="dumpProgress">0%</span></p>
+                                <div style="width:100%; height:10px; background:#333; border:1px solid #fff;">
+                                    <div id="dumpBar" style="width:0%; height:100%; background:#00ff00; transition: width 0.1s;"></div>
+                                </div>
+                            </div>
+                            <div id="rebootCountdown" style="margin-top:20px; color:#ffff00; font-size:1.2em;">Reiniciando em 15 segundos...</div>
+                        </div>
+                        <div style="margin-top:30px; font-size:0.8em; color:#aaa;">Digite 'reboot' para reiniciar imediatamente.</div>
+                    </div>
+                `;
+                document.querySelector('.bios-container').appendChild(bsodDiv);
+            }
+
+            document.getElementById('bsod').style.display = 'flex';
+            world.isFrozen = true;
+            if (world.radioPlaying) stopRadio();
+
+            let progress = 0;
+            const progressSpan = document.getElementById('dumpProgress');
+            const progressBar = document.getElementById('dumpBar');
+            const countdownSpan = document.getElementById('rebootCountdown');
+            let countdown = 15;
+
+            const dumpInterval = setInterval(() => {
+                progress += Math.random() * 5 + 1;
+                if (progress > 100) progress = 100;
+                progressSpan.innerText = Math.floor(progress) + '%';
+                progressBar.style.width = progress + '%';
+
+                if (progress >= 100) {
+                    clearInterval(dumpInterval);
+                    const countInterval = setInterval(() => {
+                        countdown--;
+                        countdownSpan.innerText = `Reiniciando em ${countdown} segundos...`;
+                        if (countdown <= 0) {
+                            clearInterval(countInterval);
+                            location.reload();
+                        }
+                    }, 1000);
+                }
+            }, 150);
+        }
+
+        function triggerFinal(title, desc) {
+            if (world.finalTriggered) return;
+            world.finalTriggered = true;
+            world.isFrozen = true;
+            if (world.radioPlaying) stopRadio();
+            playSuccess();
+            const finalDiv = document.createElement('div');
+            finalDiv.className = 'window active';
+            finalDiv.style.position = 'fixed';
+            finalDiv.style.top = '50%';
+            finalDiv.style.left = '50%';
+            finalDiv.style.transform = 'translate(-50%, -50%)';
+            finalDiv.style.width = '500px';
+            finalDiv.style.height = '300px';
+            finalDiv.style.zIndex = '999999';
+            finalDiv.style.background = '#0a0a0a';
+            finalDiv.style.border = '2px solid #00ff41';
+            finalDiv.style.boxShadow = '0 0 100px #00ff41';
+            finalDiv.style.padding = '20px';
+            finalDiv.style.textAlign = 'center';
+            finalDiv.style.display = 'flex';
+            finalDiv.style.flexDirection = 'column';
+            finalDiv.style.justifyContent = 'center';
+            finalDiv.style.alignItems = 'center';
+            finalDiv.innerHTML = `
+                <h2 style="color:#ff00ff;">${title}</h2>
+                <p style="color:#00ff41; margin-top:20px;">${desc}</p>
+                <button onclick="location.reload()" style="margin-top:30px; background:#000; border:1px solid #ff00ff; color:#ff00ff; padding:10px 20px; font-family:'Press Start 2P'; cursor:pointer;">REINICIAR</button>
+            `;
+            document.body.appendChild(finalDiv);
+        }
+
+        // ==========================================================================
+        // RELÓGIO E NORMALIZAÇÃO
+        // ==========================================================================
+        let clockInterval = null;
+        let sessionTimer = null;
+        let normalizationTimers = [];
+
+        function initClock() {
+            const clock = document.getElementById('clock');
+            if (!clock) return;
+
+            sessionTimer = setInterval(() => {
+                world.sessionTime++;
+                const notepad = document.getElementById('notepadContent');
+                const notepadWin = document.getElementById('notepad');
+                if (notepad && notepadWin && notepadWin.classList.contains('active')) {
+                    let baseNotes = 'Anotações esparsas:\n- O som está em algum lugar.\n- O calendário não parece confiável.';
+                    if (world.noteLinesAdded.includes('reading_again')) {
+                        baseNotes += `\n- Você está lendo isso novamente.`;
+                    }
+                    if (world.noteLinesAdded.includes('day12')) {
+                        baseNotes += `\n- O dia 12 tem uma nota: "A porta está em 1999."`;
+                    }
+                    if (world.noteLinesAdded.includes('radio_constant')) {
+                        baseNotes += `\n- O rádio emite um som constante. Não consigo ignorar.`;
+                    }
+                    if (world.sessionTime > 240 && !world.noteLinesAdded.includes('story1')) {
+                        baseNotes += `\n- 1999. O último ano. O portal se aproxima.`;
+                        world.noteLinesAdded.push('story1');
+                        saveWorld();
+                    }
+                    if (world.sessionTime > 360 && !world.noteLinesAdded.includes('story2')) {
+                        baseNotes += `\n- Eles estão me ouvindo. O rádio é a chave.`;
+                        world.noteLinesAdded.push('story2');
+                        saveWorld();
+                    }
+                    if (world.sessionTime > 480 && !world.noteLinesAdded.includes('story3')) {
+                        baseNotes += `\n- 31/12/1999. Não há mais tempo. A porta se abrirá.`;
+                        world.noteLinesAdded.push('story3');
+                        saveWorld();
+                    }
+                    if (notepad.value !== baseNotes) {
+                        notepad.value = baseNotes;
+                    }
+                }
+                if (Math.random() > 0.95 && !world.isFrozen) {
+                    const out = document.getElementById('termOut');
+                    if (out) {
+                        const msgs = [
+                            '[KERNEL] Falha ao acessar o dispositivo portal.',
+                            '[CRITICAL] Tempo de vida do sistema: 2000 horas.',
+                            '[WARN] Conexão com gateway.portal instável.',
+                            '[INFO] Atualizando calendário interno...',
+                            '[ERROR] Não foi possível decodificar o sinal.'
+                        ];
+                        const msg = msgs[Math.floor(Math.random() * msgs.length)];
+                        out.innerHTML += `<br><span style="color:#ff8888;">${msg}</span>`;
+                    }
+                }
+            }, 1000);
+
+            setTimeout(() => {
+                document.getElementById('crtEffect').classList.add('crt-faded');
+            }, 30000);
+            setTimeout(() => {
+                document.getElementById('crtEffect').style.opacity = '0.05';
+            }, 60000);
+            setTimeout(() => {
+                if (!world.isFrozen) {
+                    world.isFrozen = true;
+                    clock.style.color = '#555';
+                    clock.innerText = '00:00:00';
+                    setTimeout(() => triggerBSOD(), 5000);
+                }
+            }, 90000);
+
+            clockInterval = setInterval(() => {
+                if (!world.isFrozen) {
+                    const now = new Date();
+                    clock.innerText = now.toLocaleTimeString();
+                }
+            }, 1000);
+        }
+
+        window.addEventListener('beforeunload', () => {
+            if (clockInterval) clearInterval(clockInterval);
+            if (sessionTimer) clearInterval(sessionTimer);
+            normalizationTimers.forEach(t => clearTimeout(t));
+            if (world.radioPlaying) stopRadio();
+            if (ambientOsc) { ambientOsc.stop(); ambientOsc = null; }
+            if (ambientInterval) clearInterval(ambientInterval);
+        });
+    </script>
+</body>
+</html>
