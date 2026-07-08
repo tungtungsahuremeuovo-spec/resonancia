@@ -75,17 +75,6 @@
         .bios-container.active { display:block; }
         .bios-container * { box-sizing: border-box; user-select:none; }
 
-        /* Cursor customizado estilo Windows 2000 */
-        .bios-container .desktop, .bios-container .taskbar, .bios-container .window, .bios-container .icon, .bios-container .item {
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M0 0 L24 24 L12 16 L9 22 L5 20 L8 14 Z" fill="%23ffffff" stroke="%23000000" stroke-width="1.5"/></svg>') 1 1, auto;
-        }
-
-        /* Chuva de dados (Matrix) */
-        .bios-container #rainCanvas {
-            position:fixed; top:0; left:0; width:100%; height:100%;
-            z-index:0; pointer-events:none; opacity:0.4;
-        }
-
         .bios-container .crt { position:fixed; top:0; left:0; width:100%; height:100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.2) 0px, rgba(0,0,0,0.2) 1px, transparent 1px, transparent 3px); pointer-events:none; z-index:9999; mix-blend-mode:overlay; transition: opacity 2s ease; }
         .bios-container .crt-faded { opacity:0.1; }
         .bios-container .burn-in { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9998; background: radial-gradient(ellipse at 50% 80%, rgba(255,255,255,0.02) 0%, transparent 80%); opacity:0; transition: opacity 2s ease; }
@@ -149,87 +138,31 @@
         .bios-container .bsod .title { font-family:'Press Start 2P'; font-size:2em; color:#fff; margin-bottom:20px; }
         .bios-container .bsod .code { color:#ffff00; margin:20px 0; }
 
-        /* Overlay da página secreta */
         #secretOverlay {
-            display:none;
-            position:fixed;
-            top:0; left:0;
-            width:100%; height:100%;
-            background:rgba(0,0,0,0.9);
-            z-index:99999;
-            justify-content:center;
-            align-items:center;
-            font-family:'Times New Roman', Times, serif;
-        }
+            display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:99999; justify-content:center; align-items:center; font-family:'Times New Roman', Times, serif; }
         #secretOverlay.active { display:flex; }
-        #secretBox {
-            background:#0f000f;
-            border:2px solid #ff00ff;
-            padding:30px;
-            max-width:600px;
-            color:#ffccff;
-            box-shadow:0 0 50px #ff00ff;
-            position:relative;
-        }
+        #secretBox { background:#0f000f; border:2px solid #ff00ff; padding:30px; max-width:600px; color:#ffccff; box-shadow:0 0 50px #ff00ff; position:relative; }
         #secretBox h2 { color:#ff00ff; margin-bottom:15px; }
         #secretBox p { line-height:1.6; }
-        #secretBox .close-btn {
-            position:absolute;
-            top:10px; right:15px;
-            color:#ff00ff;
-            cursor:pointer;
-            font-weight:bold;
-            font-size:1.2em;
-        }
+        #secretBox .close-btn { position:absolute; top:10px; right:15px; color:#ff00ff; cursor:pointer; font-weight:bold; font-size:1.2em; }
         #secretBox .close-btn:hover { color:#ffcccc; }
 
-        /* Diálogo de Desligamento */
-        #shutdownDialog {
-            display:none;
-            position:fixed;
-            top:0; left:0;
-            width:100%; height:100%;
-            background:rgba(0,0,0,0.7);
-            z-index:999999;
-            justify-content:center;
-            align-items:center;
-            font-family:'VT323', monospace;
-        }
+        #shutdownDialog { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:999999; justify-content:center; align-items:center; font-family:'VT323', monospace; }
         #shutdownDialog.active { display:flex; }
-        #shutdownBox {
-            background:#c0c0c0;
-            border:2px outset #fff;
-            border-right-color:#808080; border-bottom-color:#808080;
-            padding:20px;
-            max-width:350px;
-            color:#000;
-            font-size:1.2em;
-            text-align:center;
-            box-shadow:0 0 30px rgba(0,0,0,0.8);
-        }
-        #shutdownBox .titlebar {
-            background:#000080; color:#fff;
-            padding:4px 8px; margin:-20px -20px 15px -20px;
-            font-family:'Press Start 2P'; font-size:0.5em;
-            text-align:left;
-        }
+        #shutdownBox { background:#c0c0c0; border:2px outset #fff; border-right-color:#808080; border-bottom-color:#808080; padding:20px; max-width:350px; color:#000; font-size:1.2em; text-align:center; box-shadow:0 0 30px rgba(0,0,0,0.8); }
+        #shutdownBox .titlebar { background:#000080; color:#fff; padding:4px 8px; margin:-20px -20px 15px -20px; font-family:'Press Start 2P'; font-size:0.5em; text-align:left; }
         #shutdownBox .buttons { margin-top:15px; display:flex; gap:10px; justify-content:center; }
-        #shutdownBox .buttons button {
-            background:#c0c0c0; border:1px outset #fff; border-right-color:#808080; border-bottom-color:#808080;
-            padding:5px 20px; font-family:'VT323'; font-size:1em; cursor:pointer;
-        }
+        #shutdownBox .buttons button { background:#c0c0c0; border:1px outset #fff; border-right-color:#808080; border-bottom-color:#808080; padding:5px 20px; font-family:'VT323'; font-size:1em; cursor:pointer; }
         #shutdownBox .buttons button:active { border:1px inset #fff; }
     </style>
 </head>
 <body>
-    <!-- SITE CORPORATIVO -->
     <div class="corporate-site" id="corporateSite">
         <div class="header">
             <img class="logo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23000080'/%3E%3Ccircle cx='40' cy='40' r='30' fill='%23ffffff'/%3E%3Ctext x='30' y='50' fill='%23000080' font-family='monospace' font-size='40'%3ER%3C/text%3E%3C/svg%3E" alt="Ressonância Systems">
             <h1>Ressonância Systems</h1>
             <marquee direction="left" scrollamount="4">Soluções em tecnologia desde 1999 • Compromisso com o futuro • Y2K Ready •</marquee>
         </div>
-        
         <div class="nav" id="mainNav">
             <a data-page="home" class="active">Home</a>
             <a data-page="servicos">Serviços</a>
@@ -241,12 +174,10 @@
             <a data-page="contato">Contato</a>
         </div>
         
-        <!-- PÁGINAS -->
         <div id="page-home" class="page active">
             <h2>Bem-vindo à Ressonância</h2>
             <div style="border:1px solid #000080; padding:10px; margin-bottom:15px; background:#f0f8ff;">
-                <strong>[ ATUALIZAÇÃO Y2K ]</strong> Nossos sistemas estão 100% preparados para a virada do milênio. Não deixe sua empresa para trás. 
-                <a href="#" onclick="navigate('servicos')">Conheça nossos serviços</a>.
+                <strong>[ ATUALIZAÇÃO Y2K ]</strong> Nossos sistemas estão 100% preparados para a virada do milênio. Não deixe sua empresa para trás. <a href="#" onclick="navigate('servicos')">Conheça nossos serviços</a>.
             </div>
             <p>Há mais de 20 anos, a Ressonância Systems vem desenvolvendo soluções inovadoras para empresas de todos os portes. Nossa missão é conectar pessoas e tecnologias de forma confiável e segura.</p>
             <p>Neste novo milênio, a Ressonância é a parceira ideal para quem deseja navegar pelas águas da transformação digital. Atuamos em todo o território nacional com suporte remoto e presencial.</p>
@@ -264,22 +195,18 @@
         <div id="page-servicos" class="page">
             <h2>Nossos Serviços Especializados</h2>
             <p>Oferecemos um portfólio completo para preparar sua empresa para o novo milênio. Conheça nossos serviços em detalhes:</p>
-            
             <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
                 <h3 style="color:#000080;">[ INFRAESTRUTURA ]</h3>
                 <p>Planejamento, implementação e manutenção de redes corporativas. Trabalhamos com cabos categoria 5e, switches gerenciáveis e roteadores Cisco, garantindo que sua empresa esteja sempre conectada.</p>
             </div>
-            
             <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
                 <h3 style="color:#000080;">[ DESENVOLVIMENTO ]</h3>
                 <p>Criação de sistemas web, aplicativos desktop e soluções customizadas em linguagens como Delphi, Visual Basic 6 e ASP. Perfeitos para automação comercial e gestão empresarial.</p>
             </div>
-            
             <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
                 <h3 style="color:#000080;">[ SEGURANÇA ]</h3>
                 <p>Auditorias completas de sistemas, testes de penetração (pen-test) e implementação de políticas de segurança. Nossa equipe garante que seus dados estejam protegidos contra invasões e malwares.</p>
             </div>
-            
             <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
                 <h3 style="color:#000080;">[ NUVEM ]</h3>
                 <p>Migração e gerenciamento de ambientes cloud, garantindo escalabilidade e disponibilidade total dos seus sistemas. Trabalhamos com as principais plataformas do mercado.</p>
@@ -289,18 +216,15 @@
         <div id="page-projetos" class="page">
             <h2>Projetos em Destaque</h2>
             <p>Confira alguns dos projetos mais marcantes realizados pela Ressonância Systems.</p>
-            
             <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
                 <h3 style="color:#000080;">Projeto "Portal"</h3>
                 <p>Desenvolvimento de um sistema de comunicação de baixa latência para uma rede de pesquisa. O projeto foi concluído em 1999 e até hoje é referência em tecnologia de ponta.</p>
                 <p><em>Nota: O nome "Portal" foi escolhido pelo cliente, não pela Ressonância.</em></p>
             </div>
-            
             <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
                 <h3 style="color:#000080;">Projeto "Espectro"</h3>
                 <p>Implementação de um sistema de análise de espectro de radiofrequência para uma instituição de pesquisa. O projeto detectou sinais inexplicáveis na faixa de 1999 Hz.</p>
             </div>
-            
             <div style="border:1px solid #ccc; padding:10px; margin:10px 0; background:#fff;">
                 <h3 style="color:#000080;">Projeto "Milênio"</h3>
                 <p>Consultoria para adequação Y2K de mais de 50 empresas. Todas as auditorias apontaram para uma anomalia nos sistemas de data, que foi corrigida com sucesso.</p>
@@ -310,7 +234,6 @@
         <div id="page-sobre" class="page">
             <h2>Sobre a Ressonância</h2>
             <p><strong>Fundada em 1999</strong>, a Ressonância Systems nasceu com a missão de antecipar as necessidades tecnológicas de um mundo em constante transformação.</p>
-            
             <h3 style="margin-top:10px; font-size:18px;">Linha do Tempo:</h3>
             <ul style="list-style:none; padding-left:0;">
                 <li><strong>1999:</strong> Fundação da empresa com foco em redes de computadores.</li>
@@ -320,7 +243,6 @@
                 <li><strong>2000:</strong> Descoberta de uma anomalia em sistemas de data durante testes Y2K – origem desconhecida.</li>
                 <li><strong>Atualmente:</strong> Referência em soluções tecnológicas para o novo milênio.</li>
             </ul>
-            
             <p style="margin-top:10px;">Nossa equipe é composta por engenheiros, desenvolvedores e especialistas em segurança que trabalham em sintonia para entregar resultados excepcionais.</p>
             <p><strong>Nossa visão:</strong> Ser a ponte entre o presente e o futuro, conectando pessoas e negócios através da tecnologia.</p>
         </div>
@@ -328,22 +250,18 @@
         <div id="page-noticias" class="page">
             <h2>Notícias e Novidades</h2>
             <p>Acompanhe as últimas atualizações do mundo da tecnologia e da Ressonância Systems.</p>
-            
             <div style="border:1px solid #999; padding:10px; margin:10px 0; background:#fff;">
                 <h3 style="color:#000080;">► Microsoft lança o Windows 2000!</h3>
                 <p><em>17/02/2000</em> — A Microsoft anunciou oficialmente o lançamento do Windows 2000, o sistema operacional mais seguro e estável da empresa. A Ressonância Systems está pronta para auxiliar sua empresa na migração.</p>
             </div>
-            
             <div style="border:1px solid #999; padding:10px; margin:10px 0; background:#fff;">
                 <h3 style="color:#000080;">► Ressonância Systems comemora 1 ano</h3>
                 <p><em>31/12/1999</em> — Nossa empresa completa 1 ano de existência e celebramos com o lançamento do nosso novo portal de clientes. Estamos prontos para o ano 2000!</p>
             </div>
-            
             <div style="border:1px solid #999; padding:10px; margin:10px 0; background:#fff;">
                 <h3 style="color:#000080;">► O Bug do Milênio (Y2K) – Estamos preparados!</h3>
                 <p><em>01/12/1999</em> — Com a virada do ano se aproximando, muitas empresas temem os efeitos do Bug do Milênio. A Ressonância Systems já realizou auditorias em mais de 50 empresas e garante: seus sistemas estão prontos.</p>
             </div>
-            
             <div style="border:1px solid #999; padding:10px; margin:10px 0; background:#fff;">
                 <h3 style="color:#000080;">► Sinais de rádio misteriosos detectados</h3>
                 <p><em>20/11/1999</em> — Durante um projeto de monitoramento de espectro, nossa equipe detectou sinais de rádio na frequência de 1999 Hz, sem origem identificada. As investigações continuam.</p>
@@ -353,7 +271,6 @@
         <div id="page-clientes" class="page">
             <h2>Nossos Clientes</h2>
             <p>Empresas que confiaram na Ressonância Systems para modernizar suas operações:</p>
-            
             <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap:15px; margin-top:15px;">
                 <div style="border:1px solid #999; padding:10px; text-align:center; background:#fff;"><strong>TechCorp Systems</strong><br><span style="font-size:0.8em;">Infraestrutura</span></div>
                 <div style="border:1px solid #999; padding:10px; text-align:center; background:#fff;"><strong>MegaStore Retail</strong><br><span style="font-size:0.8em;">Sistema ERP</span></div>
@@ -385,14 +302,12 @@
         <div id="page-contato" class="page">
             <h2>Entre em Contato</h2>
             <p>Estamos sempre prontos para atender você. Entre em contato conosco pelos canais abaixo:</p>
-            
             <div style="border:1px solid #ccc; padding:10px; background:#fff; margin:10px 0;">
                 <p><strong>Telefone:</strong> (11) 2000-1999</p>
                 <p><strong>E-mail:</strong> contato@ressonancia.com.br</p>
                 <p><strong>Endereço:</strong> Av. do Milênio, 2000 - Centro, São Paulo - SP</p>
                 <p><strong>Horário:</strong> Segunda a Sexta, das 8h às 18h</p>
             </div>
-            
             <p><strong>Ou envie uma mensagem:</strong></p>
             <form id="contactForm" onsubmit="return handleContact(event)">
                 <label>Nome:</label>
@@ -406,7 +321,6 @@
             <div id="contactMsg" style="margin-top:10px; font-weight:bold;"></div>
         </div>
         
-        <!-- Área de Login (Escondida no rodapé) -->
         <div id="loginForm">
             <p style="font-size:0.8em; text-align:center; margin-bottom:5px;">Acesso Restrito</p>
             <form onsubmit="return handleLogin(event)">
@@ -428,7 +342,6 @@
         </div>
     </div>
 
-    <!-- OVERLAY DA PÁGINA SECRETA -->
     <div id="secretOverlay">
         <div id="secretBox">
             <span class="close-btn" onclick="hideSecret()">✖</span>
@@ -444,7 +357,6 @@
         </div>
     </div>
 
-    <!-- DIÁLOGO DE DESLIGAMENTO -->
     <div id="shutdownDialog">
         <div id="shutdownBox">
             <div class="titlebar">Desligar o sistema</div>
@@ -456,9 +368,7 @@
         </div>
     </div>
 
-    <!-- BIOS / ARG -->
     <div class="bios-container" id="biosContainer">
-        <canvas id="rainCanvas"></canvas>
         <div class="crt" id="crtEffect"></div>
         <div class="burn-in" id="burnIn"></div>
         <div id="bootScreen">
@@ -490,9 +400,6 @@
     </div>
 
     <script>
-        // ====================================================================
-        // SITE CORPORATIVO
-        // ====================================================================
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('mainNav').addEventListener('click', function(e) {
                 const link = e.target.closest('a');
@@ -567,15 +474,8 @@
             return false;
         }
 
-        // ====================================================================
-        // OVERLAY SECRETO
-        // ====================================================================
         function showSecret() { document.getElementById('secretOverlay').classList.add('active'); }
         function hideSecret() { document.getElementById('secretOverlay').classList.remove('active'); }
-
-        // ====================================================================
-        // DIÁLOGO DE DESLIGAMENTO
-        // ====================================================================
         function showShutdownDialog() { document.getElementById('shutdownDialog').classList.add('active'); }
         function cancelShutdown() { document.getElementById('shutdownDialog').classList.remove('active'); }
         function confirmShutdown() {
@@ -583,9 +483,6 @@
             triggerBSOD();
         }
 
-        // ====================================================================
-        // ARG - ESTADO E INICIALIZAÇÃO
-        // ====================================================================
         let _argStarted = false;
         let _booted = false;
 
@@ -656,10 +553,7 @@
             document.getElementById('bootScreen').classList.add('hidden');
             document.getElementById('desktop').classList.add('active');
             document.getElementById('taskbar').classList.add('active');
-            
-            // Inicia a chuva de dados Matrix
             initRain();
-
             setTimeout(() => {
                 document.getElementById('burnIn').classList.add('active');
                 world.burnIn = true;
@@ -681,9 +575,6 @@
             playAmbient();
         }
 
-        // ==========================================================================
-        // CHUVA DE DADOS (MATRIX)
-        // ==========================================================================
         let rainInterval = null;
         function initRain() {
             const canvas = document.getElementById('rainCanvas');
@@ -721,9 +612,6 @@
             }
         });
 
-        // ==========================================================================
-        // SOM AMBIENTE DINÂMICO
-        // ==========================================================================
         let ambientAudioCtx = null;
         let ambientOsc = null;
         let ambientGain = null;
@@ -734,23 +622,18 @@
             if (ambientAudioCtx) return;
             try {
                 ambientAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                
                 ambientFilter = ambientAudioCtx.createBiquadFilter();
                 ambientFilter.type = 'lowpass';
                 ambientFilter.frequency.value = 400;
-
                 ambientOsc = ambientAudioCtx.createOscillator();
                 ambientGain = ambientAudioCtx.createGain();
-                
                 ambientOsc.type = 'sawtooth';
                 ambientOsc.frequency.value = 55;
                 ambientGain.gain.value = 0.015;
-                
                 ambientOsc.connect(ambientFilter);
                 ambientFilter.connect(ambientGain);
                 ambientGain.connect(ambientAudioCtx.destination);
                 ambientOsc.start();
-
                 ambientInterval = setInterval(() => {
                     if (ambientOsc && !world.isFrozen) {
                         if (world.finalTriggered) {
@@ -830,9 +713,6 @@
             } catch(e) {}
         }
 
-        // ==========================================================================
-        // GERENCIADOR DE JANELAS
-        // ==========================================================================
         let zIndex = 100;
 
         function createWindow(id, title, width, height, html) {
@@ -1116,9 +996,6 @@
             }
         }
 
-        // ==========================================================================
-        // APLICATIVOS ADICIONAIS
-        // ==========================================================================
         function openSysInfo() {
             const uptime = Math.floor((Date.now() - world.startTime) / 1000);
             const hours = Math.floor(uptime / 3600);
@@ -1173,9 +1050,6 @@
             createWindow('email', 'EMAIL', 450, 350, html);
         }
 
-        // ==========================================================================
-        // MAPA INTERATIVO
-        // ==========================================================================
         function openMap() {
             let markers = `<div style="color:#aaa; text-align:center; margin-top:20px;">Coordenadas não encontradas.</div>`;
             if (world.portalFound) {
@@ -1205,9 +1079,6 @@
             createWindow('map', 'MAPA', 400, 350, html);
         }
 
-        // ==========================================================================
-        // TERMINAL - COMANDOS EXPANDIDOS
-        // ==========================================================================
         function initTerminal() {
             const input = document.getElementById('termIn');
             const out = document.getElementById('termOut');
@@ -1256,7 +1127,7 @@
 
             switch(c) {
                 case 'help':
-                    let help = 'Comandos: ls, cat, date, clear, history, whoami, find, ping, grep, tail, diff, chmod, man, uptime, df, free, uname, who, env, echo, complete, diario, jogo, tree, top, zip, save, crash, shutdown, portal, 1999, sintonizar, aurora, loop, meta, reboot';
+                    let help = 'Comandos: ls, cat, date, clear, history, whoami, find, ping, grep, tail, diff, chmod, man, uptime, df, free, uname, who, env, echo, tree, top, zip, save, crash, shutdown, portal, 1999, sintonizar, aurora, loop, meta, reboot';
                     if (world.radioSynced) help += ' (Sistema em modo π)';
                     return help;
                 case 'ls':
@@ -1500,43 +1371,6 @@
                         return 'Chave incorreta ou arquivo não encontrado.';
                     }
                     return 'Uso: decode --crypt <arquivo> <chave>';
-                case 'tree':
-                    return `.
-├── bin
-│   └── decode
-├── etc
-│   ├── hosts
-│   └── config.ini
-├── var
-│   └── log
-│       └── syslog
-├── mnt
-├── tmp
-├── .secret
-├── proc
-│   ├── version
-│   └── cpuinfo
-└── dev
-    └── random`;
-                case 'top':
-                    const portalPid = Math.floor(Math.random() * 1000 + 1000);
-                    return `  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
-  1 root      20   0  123M  12M  8M S  0.0  1.2   0:00.01 init
-  ${portalPid} root      20   0  2.5G 500M 200M S 99.9 50.0   2:42.17 portal
-  42 root      20   0  45M  20M  5M S  0.3  2.0   0:00.05 bash`;
-                case 'zip':
-                    if (args.length < 2) return 'zip: uso: zip <arquivo> <destino>';
-                    return `Arquivo ${args[0]} compactado com sucesso em ${args[1]}.zip. (Simulado)`;
-                case 'save':
-                    saveWorld();
-                    return 'Progresso salvo manualmente com sucesso.';
-                case 'aurora':
-                    if (world.radioSynced && world.calendarMarked) {
-                        triggerFinal('AURORA', 'Você descobriu o nome do instituto de pesquisa. O portal sempre esteve lá. Aurora era o verdadeiro nome do projeto.');
-                    } else {
-                        return 'Você precisa de mais pistas para acessar este final.';
-                    }
-                    return null;
                 case 'crash':
                     triggerBSOD();
                     return null;
@@ -1586,9 +1420,6 @@
             }
         }
 
-        // ==========================================================================
-        // JOGO DA VELHA
-        // ==========================================================================
         let tttBoard = ['', '', '', '', '', '', '', '', ''];
         let tttTurn = 'X';
         let tttGameOver = false;
@@ -1672,9 +1503,6 @@
             }
         }
 
-        // ==========================================================================
-        // RÁDIO
-        // ==========================================================================
         function initRadio() {
             const canvas = document.getElementById('radioCanvas');
             if (!canvas) return;
@@ -1786,9 +1614,6 @@
             world.radioPlaying = false;
         }
 
-        // ==========================================================================
-        // CALENDÁRIO
-        // ==========================================================================
         function getRealDateMessage() {
             const now = new Date();
             const month = now.getMonth() + 1;
@@ -1903,9 +1728,6 @@
             }
         }
 
-        // ==========================================================================
-        // BSOD E FINAIS
-        // ==========================================================================
         function triggerBSOD() {
             const bsod = document.getElementById('bsod');
             if (!bsod) {
@@ -1997,9 +1819,6 @@
             document.body.appendChild(finalDiv);
         }
 
-        // ==========================================================================
-        // RELÓGIO E NORMALIZAÇÃO
-        // ==========================================================================
         let clockInterval = null;
         let sessionTimer = null;
         let normalizationTimers = [];
