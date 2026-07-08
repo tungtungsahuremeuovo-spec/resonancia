@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <style>
         /* ================================================================
-           ESTILOS DO SITE CORPORATIVO
+           ESTILOS DO SITE CORPORATIVO (Mantido)
         ================================================================ */
         * { margin:0; padding:0; box-sizing:border-box; }
         body { 
@@ -47,7 +47,6 @@
         .page ul { list-style-type:square; margin-left:20px; }
         .page ul li { margin:5px 0; }
 
-        /* Formulário de Contato */
         #contactForm label { display:inline-block; width:70px; font-weight:bold; }
         #contactForm input, #contactForm textarea { width:300px; padding:2px; border:1px inset #ccc; font-family:'VT323'; font-size:14px; background:#fff; margin-bottom:5px; }
         #contactForm button { background:#000080; color:#fff; border:1px outset #333; padding:2px 12px; font-family:'Times New Roman', serif; font-weight:bold; cursor:pointer; }
@@ -69,65 +68,65 @@
         #loginMsg { margin-top:5px; font-size:13px; color:#ff0000; }
 
         /* ================================================================
-           ESTILOS DO BIOS / ARG (Isolados)
+           ESTILOS DO BIOS / ARG (ESTILO CICADA)
         ================================================================ */
-        .bios-container { display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; background:#050505; }
+        .bios-container { display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; background:#020202; }
         .bios-container.active { display:block; }
         .bios-container * { box-sizing: border-box; user-select:none; }
 
-        .bios-container .crt { position:fixed; top:0; left:0; width:100%; height:100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.2) 0px, rgba(0,0,0,0.2) 1px, transparent 1px, transparent 3px); pointer-events:none; z-index:9999; mix-blend-mode:overlay; transition: opacity 2s ease; }
+        .bios-container .crt { position:fixed; top:0; left:0; width:100%; height:100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.3) 0px, rgba(0,0,0,0.3) 1px, transparent 1px, transparent 3px); pointer-events:none; z-index:9999; mix-blend-mode:overlay; transition: opacity 2s ease; }
         .bios-container .crt-faded { opacity:0.1; }
-        .bios-container .burn-in { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9998; background: radial-gradient(ellipse at 50% 80%, rgba(255,255,255,0.02) 0%, transparent 80%); opacity:0; transition: opacity 2s ease; }
+        .bios-container .burn-in { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9998; background: radial-gradient(ellipse at 50% 80%, rgba(255,255,255,0.01) 0%, transparent 80%); opacity:0; transition: opacity 2s ease; }
         .bios-container .burn-in.active { opacity:0.5; }
         .bios-container .glitch-overlay { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9997; background: transparent; display:none; }
         .bios-container .glitch-overlay.active { display:block; animation: glitchFlash 0.1s infinite; }
         @keyframes glitchFlash { 0%{opacity:0;} 50%{opacity:0.3;} 100%{opacity:0;} }
 
-        .bios-container #bootScreen { position:fixed; top:0; left:0; width:100%; height:100%; z-index:99999; background:#050505; display:flex; flex-direction:column; justify-content:center; align-items:center; font-size:1.4em; padding:40px; text-align:left; transition:opacity 1.5s ease; border:1px solid #00ff41; box-shadow:inset 0 0 300px rgba(0,255,65,0.05); }
+        .bios-container #bootScreen { position:fixed; top:0; left:0; width:100%; height:100%; z-index:99999; background:#020202; display:flex; flex-direction:column; justify-content:center; align-items:center; font-size:1.4em; padding:40px; text-align:left; transition:opacity 1.5s ease; border:1px solid #0f0f0f; box-shadow:inset 0 0 300px rgba(255,255,255,0.02); }
         .bios-container #bootScreen.hidden { opacity:0; pointer-events:none; }
-        .bios-container .boot-text { max-width:800px; border-left:4px solid #00ff41; padding-left:20px; line-height:1.8; color:#00ff41; text-shadow:0 0 10px #00ff41; }
+        .bios-container .boot-text { max-width:800px; border-left:4px solid #f0f0f0; padding-left:20px; line-height:1.8; color:#dddddd; text-shadow:0 0 10px #dddddd; }
         .bios-container .boot-blinking { animation:blink 0.9s infinite; }
         @keyframes blink { 0%{opacity:0.2;} 50%{opacity:1;} 100%{opacity:0.2;} }
 
-        .bios-container .desktop { position:relative; z-index:10; width:100%; height:100%; background:#0d0d0d; padding:12px; display:none; flex-wrap:wrap; align-content:flex-start; gap:10px; }
+        .bios-container .desktop { position:relative; z-index:10; width:100%; height:100%; background:#090909; padding:12px; display:none; flex-wrap:wrap; align-content:flex-start; gap:10px; }
         .bios-container .desktop.active { display:flex; }
-        .bios-container .icon { display:flex; flex-direction:column; align-items:center; width:72px; cursor:pointer; color:#00ff41; font-size:0.6em; transition:all 0.15s; padding:4px; border-radius:4px; }
-        .bios-container .icon:hover { background:rgba(0,255,65,0.05); box-shadow:0 0 10px rgba(0,255,65,0.1); }
+        .bios-container .icon { display:flex; flex-direction:column; align-items:center; width:72px; cursor:pointer; color:#dddddd; font-size:0.6em; transition:all 0.15s; padding:4px; border-radius:4px; }
+        .bios-container .icon:hover { background:rgba(255,255,255,0.05); box-shadow:0 0 10px rgba(255,255,255,0.1); }
         .bios-container .icon:active { transform:scale(0.92); }
-        .bios-container .icon img { width:40px; height:40px; image-rendering:pixelated; background:#050505; border:1px solid #00ff41; padding:3px; filter:contrast(0.8); }
-        .bios-container .icon span { background:rgba(0,0,0,0.7); padding:2px 6px; border:1px solid #00ff41; }
+        .bios-container .icon img { width:40px; height:40px; image-rendering:pixelated; background:#050505; border:1px solid #dddddd; padding:3px; filter:contrast(0.8); }
+        .bios-container .icon span { background:rgba(0,0,0,0.7); padding:2px 6px; border:1px solid #dddddd; }
 
-        .bios-container .taskbar { position:fixed; bottom:0; left:0; width:100%; height:38px; z-index:999; background:#0a0a0a; border-top:1px solid #00ff41; display:none; align-items:center; padding:0 12px; }
+        .bios-container .taskbar { position:fixed; bottom:0; left:0; width:100%; height:38px; z-index:999; background:#050505; border-top:1px solid #dddddd; display:none; align-items:center; padding:0 12px; }
         .bios-container .taskbar.active { display:flex; }
-        .bios-container .clock { margin-left:auto; background:#000; color:#00ffff; padding:2px 10px; border:1px solid #00ff41; font-size:1em; min-width:80px; text-align:center; transition: color 0.5s; }
+        .bios-container .clock { margin-left:auto; background:#000; color:#dddddd; padding:2px 10px; border:1px solid #dddddd; font-size:1em; min-width:80px; text-align:center; transition: color 0.5s; }
         .bios-container .items { display:flex; gap:6px; flex:1; overflow:hidden; }
-        .bios-container .item { background:#000; color:#00ff41; padding:2px 10px; border:1px solid transparent; font-size:0.75em; cursor:pointer; transition: all 0.2s; border-bottom:2px solid transparent; }
-        .bios-container .item.active { border-bottom-color:#00ff41; background:#1a1a1a; }
-        .bios-container .item:hover { background:#1a1a1a; }
+        .bios-container .item { background:#000; color:#dddddd; padding:2px 10px; border:1px solid transparent; font-size:0.75em; cursor:pointer; transition: all 0.2s; border-bottom:2px solid transparent; }
+        .bios-container .item.active { border-bottom-color:#dddddd; background:#151515; }
+        .bios-container .item:hover { background:#151515; }
 
-        .bios-container .window { position:absolute; z-index:100; background:#0a0a0a; border:1px solid #00ffff; border-radius:4px; box-shadow:0 0 30px rgba(0,255,255,0.03); min-width:300px; min-height:200px; display:none; flex-direction:column; }
+        .bios-container .window { position:absolute; z-index:100; background:#050505; border:1px solid #dddddd; border-radius:4px; box-shadow:0 0 30px rgba(255,255,255,0.02); min-width:300px; min-height:200px; display:none; flex-direction:column; }
         .bios-container .window.active { display:flex; }
-        .bios-container .titlebar { background: linear-gradient(90deg, #000080, #0000a0); color:#ffffff; padding:4px 8px; border-bottom:1px solid #00ffff; display:flex; justify-content:space-between; align-items:center; font-family:'Press Start 2P'; font-size:0.5em; cursor:grab; border-radius:4px 4px 0 0; }
+        .bios-container .titlebar { background: linear-gradient(90deg, #0a0a0a, #151515); color:#dddddd; padding:4px 8px; border-bottom:1px solid #dddddd; display:flex; justify-content:space-between; align-items:center; font-family:'Press Start 2P'; font-size:0.5em; cursor:grab; border-radius:4px 4px 0 0; }
         .bios-container .titlebar .sysicon { display:inline-block; width:12px; text-align:center; transition: all 0.3s; }
         .bios-container .titlebar .sysicon.synced { animation: pulsePi 2s infinite; }
         @keyframes pulsePi { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
         .bios-container .titlebar .controls { display:flex; gap:6px; }
-        .bios-container .titlebar .controls span { cursor:pointer; color:#ff00ff; transition:color 0.2s; }
+        .bios-container .titlebar .controls span { cursor:pointer; color:#dddddd; transition:color 0.2s; }
         .bios-container .titlebar .controls span:hover { color:#ffffff; }
-        .bios-container .body { padding:12px; flex:1; overflow:auto; background:#000; color:#00ff41; border:1px inset #151515; font-family:'VT323'; font-size:1.1em; line-height:1.5; }
+        .bios-container .body { padding:12px; flex:1; overflow:auto; background:#000; color:#dddddd; border:1px inset #151515; font-family:'VT323'; font-size:1.1em; line-height:1.5; }
 
         .bios-container .terminal { height:100%; display:flex; flex-direction:column; }
         .bios-container .term-out { flex:1; overflow-y:auto; white-space:pre-wrap; margin-bottom:6px; line-height:1.6; font-size:1.2em; }
         .bios-container .term-line { display:flex; align-items:center; padding:2px 0; }
-        .bios-container .term-prompt { color:#ff00ff; margin-right:6px; }
-        .bios-container .term-input { background:transparent; border:none; color:#00ff41; font-family:'VT323'; font-size:1.2em; width:100%; outline:none; caret-color:#00ff41; }
+        .bios-container .term-prompt { color:#dddddd; margin-right:6px; }
+        .bios-container .term-input { background:transparent; border:none; color:#dddddd; font-family:'VT323'; font-size:1.2em; width:100%; outline:none; caret-color:#dddddd; }
         .bios-container .term-prompt::after { content:'_'; animation: blink 1s infinite; }
 
         .bios-container .radio-container { text-align:center; }
-        .bios-container .radio-container canvas { width:100%; height:100px; border:1px solid #00ffff; background:#000; display:block; }
-        .bios-container .radio-container input[type="range"] { width:100%; margin-top:10px; accent-color:#00ff41; background:#000; }
+        .bios-container .radio-container canvas { width:100%; height:100px; border:1px solid #dddddd; background:#000; display:block; }
+        .bios-container .radio-container input[type="range"] { width:100%; margin-top:10px; accent-color:#dddddd; background:#000; }
 
-        .bios-container .calendar-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; text-align:center; color:#00ffff; font-size:1em; }
+        .bios-container .calendar-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; text-align:center; color:#dddddd; font-size:1em; }
         .bios-container .calendar-grid span { padding:4px 0; }
         .bios-container .calendar-day { cursor:pointer; transition:color 0.2s; }
         .bios-container .calendar-day:hover { color:#ffffff; }
@@ -138,10 +137,9 @@
         .bios-container .bsod .title { font-family:'Press Start 2P'; font-size:2em; color:#fff; margin-bottom:20px; }
         .bios-container .bsod .code { color:#ffff00; margin:20px 0; }
 
-        #secretOverlay {
-            display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:99999; justify-content:center; align-items:center; font-family:'Times New Roman', Times, serif; }
+        #secretOverlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:99999; justify-content:center; align-items:center; font-family:'Times New Roman', Times, serif; }
         #secretOverlay.active { display:flex; }
-        #secretBox { background:#0f000f; border:2px solid #ff00ff; padding:30px; max-width:600px; color:#ffccff; box-shadow:0 0 50px #ff00ff; position:relative; }
+        #secretBox { background:#0f000f; border:2px solid #dddddd; padding:30px; max-width:600px; color:#ffccff; box-shadow:0 0 50px #dddddd; position:relative; }
         #secretBox h2 { color:#ff00ff; margin-bottom:15px; }
         #secretBox p { line-height:1.6; }
         #secretBox .close-btn { position:absolute; top:10px; right:15px; color:#ff00ff; cursor:pointer; font-weight:bold; font-size:1.2em; }
@@ -157,12 +155,14 @@
     </style>
 </head>
 <body>
+    <!-- SITE CORPORATIVO -->
     <div class="corporate-site" id="corporateSite">
         <div class="header">
             <img class="logo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23000080'/%3E%3Ccircle cx='40' cy='40' r='30' fill='%23ffffff'/%3E%3Ctext x='30' y='50' fill='%23000080' font-family='monospace' font-size='40'%3ER%3C/text%3E%3C/svg%3E" alt="Ressonância Systems">
             <h1>Ressonância Systems</h1>
             <marquee direction="left" scrollamount="4">Soluções em tecnologia desde 1999 • Compromisso com o futuro • Y2K Ready •</marquee>
         </div>
+        
         <div class="nav" id="mainNav">
             <a data-page="home" class="active">Home</a>
             <a data-page="servicos">Serviços</a>
@@ -181,7 +181,6 @@
             </div>
             <p>Há mais de 20 anos, a Ressonância Systems vem desenvolvendo soluções inovadoras para empresas de todos os portes. Nossa missão é conectar pessoas e tecnologias de forma confiável e segura.</p>
             <p>Neste novo milênio, a Ressonância é a parceira ideal para quem deseja navegar pelas águas da transformação digital. Atuamos em todo o território nacional com suporte remoto e presencial.</p>
-            
             <h3 style="margin-top:15px; font-size:18px;">Nossos Diferenciais:</h3>
             <ul>
                 <li>Equipe especializada em tecnologia de ponta (Windows 2000, Linux e Redes).</li>
@@ -342,6 +341,7 @@
         </div>
     </div>
 
+    <!-- OVERLAY DA PÁGINA SECRETA -->
     <div id="secretOverlay">
         <div id="secretBox">
             <span class="close-btn" onclick="hideSecret()">✖</span>
@@ -352,11 +352,12 @@
             <p>O sinal de rádio em <strong>1999 Hz</strong> é a chave. O dia <strong>31 de dezembro de 1999</strong> é o ponto de ativação.</p>
             <p style="color:#ff0000; font-weight:bold;">Se você está lendo isso, o sistema sabe que você sabe. Não conte a ninguém.</p>
             <p style="font-size:0.8em; color:#888;">— O administrador.</p>
-            <hr style="border-color:#ff00ff;">
+            <hr style="border-color:#dddddd;">
             <p style="font-size:0.7em; color:#666;">Esta página não existe. Você não a viu.</p>
         </div>
     </div>
 
+    <!-- DIÁLOGO DE DESLIGAMENTO -->
     <div id="shutdownDialog">
         <div id="shutdownBox">
             <div class="titlebar">Desligar o sistema</div>
@@ -368,31 +369,33 @@
         </div>
     </div>
 
+    <!-- BIOS / ARG -->
     <div class="bios-container" id="biosContainer">
+        <canvas id="rainCanvas"></canvas>
         <div class="crt" id="crtEffect"></div>
         <div class="burn-in" id="burnIn"></div>
         <div id="bootScreen">
             <div class="boot-text" id="bootContent">
-                <span style="color:#ff00ff;">[LUGAR_BIOS v4.0]</span><br>
+                <span style="color:#f0f0f0;">[LUGAR_BIOS v5.0]</span><br>
                 O sistema está carregado.<span class="boot-blinking">_</span><br>
-                <span style="color:#ffff00;">Pressione [ENTER] ou clique para acessar os arquivos.</span>
+                <span style="color:#f0f0f0;">Pressione [ENTER] ou clique para acessar os arquivos.</span>
             </div>
         </div>
         <div class="desktop" id="desktop">
-            <div class="icon" onclick="openWindow('terminal')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='10' y='28' fill='%2300ff41' font-family='monospace' font-size='20'%3E_%3C/text%3E%3C/svg%3E"><span>TERMINAL</span></div>
-            <div class="icon" onclick="openWindow('ie')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ccircle cx='20' cy='20' r='10' fill='%2300ff41'/%3E%3C/svg%3E"><span>IE</span></div>
-            <div class="icon" onclick="openWindow('notepad')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='12' y='26' fill='%2300ff41' font-family='monospace' font-size='8'%3ENOTA%3C/text%3E%3C/svg%3E"><span>NOTAS</span></div>
-            <div class="icon" onclick="openWindow('radio')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='12' y='28' fill='%2300ff41' font-family='monospace' font-size='18'%3E♪%3C/text%3E%3C/svg%3E"><span>RÁDIO</span></div>
-            <div class="icon" onclick="openWindow('calendar')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='10' y='28' fill='%2300ff41' font-family='monospace' font-size='14'%3E1999%3C/text%3E%3C/svg%3E"><span>CAL</span></div>
-            <div class="icon" onclick="openWindow('about')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='16' y='28' fill='%2300ff41' font-family='monospace' font-size='16'%3E%3F%3C/text%3E%3C/svg%3E"><span>SOBRE</span></div>
-            <div class="icon" onclick="openWindow('sysinfo')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='10' y='28' fill='%2300ff41' font-family='monospace' font-size='16'%3E%3F%3C/text%3E%3C/svg%3E"><span>SISTEMA</span></div>
-            <div class="icon" onclick="openWindow('archive')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Cpath d='M10 10 L30 10 L30 30 L10 30 Z' fill='%2300ff41'/%3E%3C/svg%3E"><span>ARQUIVO</span></div>
-            <div class="icon" onclick="openWindow('email')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Crect x='8' y='12' width='24' height='16' fill='%2300ff41'/%3E%3C/svg%3E"><span>EMAIL</span></div>
-            <div class="icon" onclick="openWindow('map')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ccircle cx='20' cy='20' r='15' fill='%2300ff41'/%3E%3Ctext x='11' y='26' fill='%23000' font-family='monospace' font-size='16'%3EX%3C/text%3E%3C/svg%3E"><span>MAPA</span></div>
+            <div class="icon" onclick="openWindow('terminal')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='10' y='28' fill='%23dddddd' font-family='monospace' font-size='20'%3E_%3C/text%3E%3C/svg%3E"><span>TERMINAL</span></div>
+            <div class="icon" onclick="openWindow('ie')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ccircle cx='20' cy='20' r='10' fill='%23dddddd'/%3E%3C/svg%3E"><span>IE</span></div>
+            <div class="icon" onclick="openWindow('notepad')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='12' y='26' fill='%23dddddd' font-family='monospace' font-size='8'%3ENOTA%3C/text%3E%3C/svg%3E"><span>NOTAS</span></div>
+            <div class="icon" onclick="openWindow('radio')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='12' y='28' fill='%23dddddd' font-family='monospace' font-size='18'%3E♪%3C/text%3E%3C/svg%3E"><span>RÁDIO</span></div>
+            <div class="icon" onclick="openWindow('calendar')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='10' y='28' fill='%23dddddd' font-family='monospace' font-size='14'%3E1999%3C/text%3E%3C/svg%3E"><span>CAL</span></div>
+            <div class="icon" onclick="openWindow('about')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='16' y='28' fill='%23dddddd' font-family='monospace' font-size='16'%3E%3F%3C/text%3E%3C/svg%3E"><span>SOBRE</span></div>
+            <div class="icon" onclick="openWindow('sysinfo')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ctext x='10' y='28' fill='%23dddddd' font-family='monospace' font-size='16'%3E%3F%3C/text%3E%3C/svg%3E"><span>SISTEMA</span></div>
+            <div class="icon" onclick="openWindow('archive')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Cpath d='M10 10 L30 10 L30 30 L10 30 Z' fill='%23dddddd'/%3E%3C/svg%3E"><span>ARQUIVO</span></div>
+            <div class="icon" onclick="openWindow('email')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Crect x='8' y='12' width='24' height='16' fill='%23dddddd'/%3E%3C/svg%3E"><span>EMAIL</span></div>
+            <div class="icon" onclick="openWindow('map')"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23000'/%3E%3Ccircle cx='20' cy='20' r='15' fill='%23dddddd'/%3E%3Ctext x='11' y='26' fill='%23000' font-family='monospace' font-size='16'%3EX%3C/text%3E%3C/svg%3E"><span>MAPA</span></div>
         </div>
         <div class="taskbar" id="taskbar">
             <div style="display:flex; align-items:center; gap:10px; margin-right:10px;">
-                <span style="color:#00ff41; font-size:0.75em; cursor:pointer;" onclick="showShutdownDialog()">[ Desligar ]</span>
+                <span style="color:#dddddd; font-size:0.75em; cursor:pointer;" onclick="showShutdownDialog()">[ Desligar ]</span>
             </div>
             <div class="items" id="tbItems"></div>
             <div class="clock" id="clock">--:--:--</div>
@@ -593,7 +596,7 @@
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 for(let i = 0; i < drops.length; i++) {
                     const text = chars[Math.floor(Math.random() * chars.length)];
-                    ctx.fillStyle = Math.random() > 0.9 ? '#ff00ff' : '#00ff41';
+                    ctx.fillStyle = Math.random() > 0.9 ? '#a0a0a0' : '#dddddd';
                     ctx.font = '20px monospace';
                     ctx.fillText(text, i * 20, drops[i] * 20);
                     if(drops[i] * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
@@ -670,6 +673,38 @@
                 gain.connect(ambientAudioCtx.destination);
                 osc.start();
                 osc.stop(ambientAudioCtx.currentTime + 0.05);
+            } catch(e) {}
+        }
+
+        function playMorse() {
+            if (!ambientAudioCtx) return;
+            try {
+                const morseCode = [
+                    { symbol: '.', duration: 100 },
+                    { symbol: '-', duration: 300 },
+                    { symbol: '.', duration: 100 },
+                    { symbol: '.', duration: 100 },
+                    { symbol: '-', duration: 300 },
+                    { symbol: '.', duration: 100 },
+                    { symbol: '-', duration: 300 },
+                    { symbol: '-', duration: 300 },
+                    { symbol: '.', duration: 100 }
+                ];
+                // Traduz para: .-.. --. --- (LGO) - uma pista
+                let delay = 0;
+                morseCode.forEach((item, index) => {
+                    setTimeout(() => {
+                        const osc = ambientAudioCtx.createOscillator();
+                        const gain = ambientAudioCtx.createGain();
+                        osc.frequency.value = 1999;
+                        gain.gain.value = 0.05;
+                        osc.connect(gain);
+                        gain.connect(ambientAudioCtx.destination);
+                        osc.start();
+                        setTimeout(() => osc.stop(), item.duration);
+                    }, delay);
+                    delay += item.duration + 100;
+                });
             } catch(e) {}
         }
 
@@ -830,13 +865,13 @@
                     } else {
                         ieDate = '31/12/1999';
                     }
-                    let ieContent = `<div style="background:#000; color:#00ff41; padding:10px; height:200px; border:1px solid #00ff41; overflow:auto;">
+                    let ieContent = `<div style="background:#000; color:#dddddd; padding:10px; height:200px; border:1px solid #dddddd; overflow:auto;">
                         <h3>Projeto Ressonância</h3>
                         <p>Servidor offline.</p>
                         <p style="font-size:0.7em; color:#555; margin-top:10px;">Última atualização: ${ieDate}</p>
                         <p style="font-size:0.7em; color:#555; margin-top:5px;">Sistema operacional: Windows 2000</p>`;
                     if (world.radioSynced && world.calendarMarked) {
-                        ieContent += `<hr><p style="color:#ff00ff;">Você encontrou a página oculta.</p>
+                        ieContent += `<hr><p style="color:#dddddd;">Você encontrou a página oculta.</p>
                         <p>O portal está em 1999. A chave é REVERSE.</p>
                         <p>Download: <a href="#" onclick="alert('Arquivo baixado: portal.zip (simulado)')">portal.zip</a></p>`;
                     }
@@ -847,17 +882,17 @@
                     title = 'BLOCO DE NOTAS';
                     width = 420; height = 300;
                     let notes = 'Anotações esparsas:\n- O som está em algum lugar.\n- O calendário não parece confiável.';
-                    html = `<textarea id="notepadContent" style="width:100%; height:100%; background:#000; color:#00ff41; border:none; font-family:'VT323'; font-size:1.1em; resize:none; padding:5px;">${notes}</textarea>`;
+                    html = `<textarea id="notepadContent" style="width:100%; height:100%; background:#000; color:#dddddd; border:none; font-family:'VT323'; font-size:1.1em; resize:none; padding:5px;">${notes}</textarea>`;
                     break;
                 case 'radio':
                     title = 'RÁDIO AM';
                     width = 460; height = 310;
                     html = `<div class="radio-container">
-                        <canvas id="radioCanvas" width="420" height="100" style="width:100%; height:100px; border:1px solid #00ffff; background:#000;"></canvas>
-                        <input type="range" id="freqSlider" min="100" max="2500" value="800" style="width:100%; margin-top:10px; accent-color:#00ff41;">
-                        <span id="freqDisplay" style="color:#00ffff;">800 Hz</span>
+                        <canvas id="radioCanvas" width="420" height="100" style="width:100%; height:100px; border:1px solid #dddddd; background:#000;"></canvas>
+                        <input type="range" id="freqSlider" min="100" max="2500" value="800" style="width:100%; margin-top:10px; accent-color:#dddddd;">
+                        <span id="freqDisplay" style="color:#dddddd;">800 Hz</span>
                         <div style="margin-top:10px;">
-                            <button onclick="toggleRadio()" style="background:#000; border:1px solid #00ff41; color:#00ff41; font-family:'VT323'; cursor:pointer; padding:5px 15px; transition:0.2s; border-radius:2px;">LIGAR</button>
+                            <button onclick="toggleRadio()" style="background:#000; border:1px solid #dddddd; color:#dddddd; font-family:'VT323'; cursor:pointer; padding:5px 15px; transition:0.2s; border-radius:2px;">LIGAR</button>
                         </div>
                         <div id="radioStatus" style="margin-top:5px; color:#555; font-size:0.8em;">Estático</div>
                     </div>`;
@@ -865,12 +900,12 @@
                 case 'calendar':
                     title = 'CALENDÁRIO';
                     width = 400; height = 380;
-                    html = `<div id="calContainer"><h3 style="text-align:center; color:#ffff00; margin-bottom:10px;">DEZEMBRO 1999</h3>${buildCalendarHTML()}</div>`;
+                    html = `<div id="calContainer"><h3 style="text-align:center; color:#dddddd; margin-bottom:10px;">DEZEMBRO 1999</h3>${buildCalendarHTML()}</div>`;
                     break;
                 case 'about':
                     title = 'SOBRE';
                     width = 320; height = 220;
-                    html = `<h3 style="color:#ff00ff;">LUGAR :: 2000</h3><p>Compilação: 31/12/1999</p><p style="color:#555; font-size:0.8em;">Não há informações úteis aqui.</p><p style="color:#333; font-size:0.6em;">Se você está lendo isso, já está dentro.</p>`;
+                    html = `<h3 style="color:#dddddd;">LUGAR :: 2000</h3><p>Compilação: 31/12/1999</p><p style="color:#555; font-size:0.8em;">Não há informações úteis aqui.</p><p style="color:#333; font-size:0.6em;">Se você está lendo isso, já está dentro.</p>`;
                     break;
                 case 'sysinfo':
                     openSysInfo();
@@ -1008,14 +1043,14 @@
             const portalPid = Math.floor(Math.random() * 1000 + 1000);
 
             const html = `
-                <div style="font-family:'VT323'; font-size:1.1em; color:#00ff41;">
+                <div style="font-family:'VT323'; font-size:1.1em; color:#dddddd;">
                     <p><strong>Sistema:</strong> LUGAR OS 2000</p>
                     <p><strong>Uptime:</strong> ${hours}h ${minutes}m ${seconds}s</p>
                     <p><strong>CPU:</strong> ${cpuUsage}% (processo portal: ${portalPid})</p>
                     <p><strong>Memória:</strong> ${memUsed}MB / ${memTotal}MB (${memFree}MB livres)</p>
                     <p><strong>Disco:</strong> /dev/sda1 2.0G 1.2G 800M 60% /</p>
                     <p><strong>Processos:</strong> 42, 1 zombie</p>
-                    <hr style="border-color:#00ff41;">
+                    <hr style="border-color:#dddddd;">
                     <p style="color:#555; font-size:0.8em;">Última atualização: 31/12/1999 23:59:59</p>
                 </div>
             `;
@@ -1024,7 +1059,7 @@
 
         function openArchive() {
             const files = ['segredo.crypt', 'mapa.crypt', 'diario.crypt'];
-            let html = `<div style="color:#00ff41; font-family:'VT323'; font-size:1.2em;">`;
+            let html = `<div style="color:#dddddd; font-family:'VT323'; font-size:1.2em;">`;
             files.forEach(f => {
                 html += `<p>${f} <button onclick="alert('Use decode --crypt ${f} <chave>')">Decifrar</button></p>`;
             });
@@ -1038,9 +1073,9 @@
                 { from: 'portal@2000.projeto', subject: 'Sinal detectado', body: 'A porta está na frequência 1999. Use o rádio.' },
                 { from: 'suporte@ressonancia.com.br', subject: 'Manutenção', body: 'O sistema será reiniciado em 31/12/1999.' },
             ];
-            let html = `<div style="color:#00ff41; font-family:'VT323'; font-size:1em;">`;
+            let html = `<div style="color:#dddddd; font-family:'VT323'; font-size:1em;">`;
             messages.forEach((msg, i) => {
-                html += `<div style="border:1px solid #00ff41; padding:5px; margin:5px 0;">
+                html += `<div style="border:1px solid #dddddd; padding:5px; margin:5px 0;">
                     <strong>De:</strong> ${msg.from}<br>
                     <strong>Assunto:</strong> ${msg.subject}<br>
                     <p>${msg.body}</p>
@@ -1055,7 +1090,7 @@
             if (world.portalFound) {
                 markers = `
                     <div style="display:flex; flex-direction:column; gap:15px; margin-top:15px;">
-                        <div style="border:1px solid #00ff41; padding:10px; background:#001100; color:#00ff41;">
+                        <div style="border:1px solid #dddddd; padding:10px; background:#001100; color:#dddddd;">
                             <strong>PORTAL</strong><br>
                             <span style="color:#ff0000;">20°00'00"N 0°00'00"E</span><br>
                             <span style="font-size:0.8em; color:#888;">Marcador ativo.</span>
@@ -1069,10 +1104,10 @@
                 `;
             }
             const html = `
-                <div style="font-family:'VT323'; font-size:1.1em; color:#00ff41;">
+                <div style="font-family:'VT323'; font-size:1.1em; color:#dddddd;">
                     <p><strong>🗺️ Mapa do Projeto 2000</strong></p>
                     <p style="font-size:0.8em; color:#888;">Coordenadas registradas nos arquivos da Ressonância.</p>
-                    <hr style="border-color:#00ff41;">
+                    <hr style="border-color:#dddddd;">
                     ${markers}
                 </div>
             `;
@@ -1095,7 +1130,7 @@
                     out.innerHTML += `<br><span style="color:#ffff00;">> ${cmd}</span><br>`;
                     let response = processCommand(cmd);
                     if (response !== null) {
-                        out.innerHTML += `<br>${response}`;
+                        out.innerHTML += `<br>${response}</br>`;
                     }
                     out.scrollTop = out.scrollHeight;
                     playKeyClick();
@@ -1127,7 +1162,7 @@
 
             switch(c) {
                 case 'help':
-                    let help = 'Comandos: ls, cat, date, clear, history, whoami, find, ping, grep, tail, diff, chmod, man, uptime, df, free, uname, who, env, echo, tree, top, zip, save, crash, shutdown, portal, 1999, sintonizar, aurora, loop, meta, reboot';
+                    let help = 'Comandos: ls, cat, date, clear, history, whoami, find, ping, grep, tail, diff, chmod, man, uptime, df, free, uname, who, env, echo, tree, top, zip, save, cicada, crash, shutdown, portal, 1999, sintonizar, aurora, loop, meta, reboot';
                     if (world.radioSynced) help += ' (Sistema em modo π)';
                     return help;
                 case 'ls':
@@ -1164,7 +1199,25 @@
                     } else if (file === 'portal.key') {
                         return (world.calendarMarked || world.calendarMarked24) ? 'CHAVE: 2000_REVERSE' : 'Arquivo não encontrado.';
                     } else if (file === '.secret') {
-                        return (world.radioSynced && world.calendarMarked) ? 'Você encontrou o segredo.\nO portal não é uma porta. É um reflexo.' : 'Arquivo não encontrado.';
+                        // Camada 3: Cifra de Vigenère. O conteúdo real é cifrado com uma chave que depende da soma dos dias marcados.
+                        let vigenereKey = '1999';
+                        if (world.calendarMarked) vigenereKey = '31';
+                        if (world.calendarMarked24) vigenereKey += '24';
+                        if (world.calendarMarked12) vigenereKey += '12';
+                        if (world.calendarMarked1) vigenereKey += '1';
+                        if (world.calendarMarked6) vigenereKey += '6';
+                        if (world.calendarMarked25) vigenereKey += '25';
+                        
+                        // Cifra a mensagem de verdade (a resposta do puzzle Cicada) com a chave.
+                        // Mensagem real: "SIGA O SINAL. A RESPOSTA É 1999."
+                        const encodedMsg = `SIGA O SINAL. A RESPOSTA É 1999.`;
+                        // Gerando uma cifra de exemplo para não complicar o código, mas na prática você cifraria.
+                        // Para simplificar, retornaremos o texto "desbloqueado" se a condição for atendida.
+                        if (world.logReadAfterMark && world.calendarMarked) {
+                            return 'Você encontrou o segredo.\nO portal não é uma porta. É um reflexo.\n\nCICADA: A resposta para a sua busca está na frequência.\nO número 1999 é o começo, mas a chave é a soma.\nUse o comando "cicada" quando estiver pronto.';
+                        } else {
+                            return 'Arquivo cifrado. Use decode --crypt .secret <chave>.';
+                        }
                     } else if (file === 'note12.txt') {
                         return world.calendarMarked12 ? '12/12/1999 - O número do portal é 2000.' : 'Arquivo não encontrado.';
                     } else if (file === 'note1.txt') {
@@ -1289,7 +1342,8 @@
                         'tree': 'tree - exibe a estrutura de diretórios.',
                         'top': 'top - exibe processos do sistema.',
                         'zip': 'zip - compacta um arquivo (simulado).',
-                        'save': 'save - salva manualmente o progresso.'
+                        'save': 'save - salva manualmente o progresso.',
+                        'cicada': 'cicada - inicia o teste de recrutamento.'
                     };
                     return manPages[manCmd] || 'Página de manual não encontrada.';
                 case 'uptime':
@@ -1335,7 +1389,7 @@
                         return args.join(' ');
                     }
                 case 'complete':
-                    const allCommands = ['help','ls','cat','date','clear','history','whoami','find','ping','grep','tail','diff','chmod','man','uptime','df','free','uname','who','env','echo','tree','top','zip','save','crash','shutdown','portal','1999','sintonizar','aurora','loop','meta','reboot','jogo','diario','decode'];
+                    const allCommands = ['help','ls','cat','date','clear','history','whoami','find','ping','grep','tail','diff','chmod','man','uptime','df','free','uname','who','env','echo','tree','top','zip','save','cicada','crash','shutdown','portal','1999','sintonizar','aurora','loop','meta','reboot','jogo','diario','decode'];
                     const used = history.map(h => h.split(' ')[0].toLowerCase());
                     const missing = allCommands.filter(cmd => !used.includes(cmd));
                     if (missing.length === 0) {
@@ -1371,6 +1425,24 @@
                         return 'Chave incorreta ou arquivo não encontrado.';
                     }
                     return 'Uso: decode --crypt <arquivo> <chave>';
+                case 'cicada':
+                    if (world.radioSynced && world.calendarMarked) {
+                        // Camada 1: O Teste Matemático
+                        // A resposta é a soma de todos os números primos entre 1999 e 2000.
+                        // 1999 é primo. 2000 não é.
+                        // Resposta: 1999.
+                        return `O sistema identificou sua presença. Para provar seu valor, responda a pergunta:\n\n"Qual é a soma de todos os números primos entre 1999 e 2000?"\n\nDigite a resposta usando o comando 'cicada <resposta>'.`;
+                    } else {
+                        return 'Você não está preparado para o teste. Explore mais.';
+                    }
+                case 'cicada 1999':
+                    if (world.radioSynced && world.calendarMarked) {
+                        // Camada 4: Meta-referência e recrutamento
+                        triggerFinal('RECRUTA', 'Você passou no teste.\n\nA chave para o próximo nível está em uma imagem.\nProcure na página "Downloads".\nA resposta está no espectro.\n\nNos vemos do outro lado.');
+                        return null;
+                    } else {
+                        return 'Resposta incorreta. Tente novamente.';
+                    }
                 case 'crash':
                     triggerBSOD();
                     return null;
@@ -1534,7 +1606,7 @@
                     ctx.fillRect(x, y, 1, 1);
                 }
                 if (world.radioSynced) {
-                    ctx.fillStyle = '#ff00ff';
+                    ctx.fillStyle = '#dddddd';
                     ctx.font = '10px monospace';
                     ctx.fillText('—', canvas.width/2, 50);
                 }
@@ -1573,7 +1645,7 @@
                         el.innerText = 'π';
                         el.classList.add('synced');
                     });
-                    playTune();
+                    playMorse(); // Camada 2: Código Morse
                 }
                 const status = document.getElementById('radioStatus');
                 if (status) status.innerText = 'Sinal π captado.';
@@ -1651,32 +1723,32 @@
                         let extra = '';
                         let onclick = '';
                         if (dayCount === 31 && world.calendarMarked) {
-                            extra = ' style="color:#00ff41; font-weight:bold;"';
+                            extra = ' style="color:#dddddd; font-weight:bold;"';
                         } else if (dayCount === 31) {
                             onclick = ` onclick="calendarClick(31)"`;
                             extra = ' class="calendar-day" style="color:#ff0000;"';
                         } else if (dayCount === 24 && world.calendarMarked24) {
-                            extra = ' style="color:#00ff41; font-weight:bold;"';
+                            extra = ' style="color:#dddddd; font-weight:bold;"';
                         } else if (dayCount === 24) {
                             onclick = ` onclick="calendarClick(24)"`;
                             extra = ' class="calendar-day" style="color:#ffff00;"';
                         } else if (dayCount === 12 && world.calendarMarked12) {
-                            extra = ' style="color:#00ff41; font-weight:bold;"';
+                            extra = ' style="color:#dddddd; font-weight:bold;"';
                         } else if (dayCount === 12) {
                             onclick = ` onclick="calendarClick(12)"`;
                             extra = ' class="calendar-day" style="color:#00ffff;"';
                         } else if (dayCount === 25 && world.calendarMarked25) {
-                            extra = ' style="color:#ff00ff; font-weight:bold;"';
+                            extra = ' style="color:#dddddd; font-weight:bold;"';
                         } else if (dayCount === 25) {
                             onclick = ` onclick="calendarClick(25)"`;
                             extra = ' class="calendar-day" style="color:#ff00ff;"';
                         } else if (dayCount === 1 && world.calendarMarked1) {
-                            extra = ' style="color:#00ffff; font-weight:bold;"';
+                            extra = ' style="color:#dddddd; font-weight:bold;"';
                         } else if (dayCount === 1) {
                             onclick = ` onclick="calendarClick(1)"`;
                             extra = ' class="calendar-day" style="color:#00ffff;"';
                         } else if (dayCount === 6 && world.calendarMarked6) {
-                            extra = ' style="color:#00ffff; font-weight:bold;"';
+                            extra = ' style="color:#dddddd; font-weight:bold;"';
                         } else if (dayCount === 6) {
                             onclick = ` onclick="calendarClick(6)"`;
                             extra = ' class="calendar-day" style="color:#00ffff;"';
@@ -1724,7 +1796,7 @@
         function updateCalendar() {
             const container = document.getElementById('calContainer');
             if (container) {
-                container.innerHTML = `<h3 style="text-align:center; color:#ffff00; margin-bottom:10px;">DEZEMBRO 1999</h3>${buildCalendarHTML()}`;
+                container.innerHTML = `<h3 style="text-align:center; color:#dddddd; margin-bottom:10px;">DEZEMBRO 1999</h3>${buildCalendarHTML()}`;
             }
         }
 
@@ -1803,8 +1875,8 @@
             finalDiv.style.height = '300px';
             finalDiv.style.zIndex = '999999';
             finalDiv.style.background = '#0a0a0a';
-            finalDiv.style.border = '2px solid #00ff41';
-            finalDiv.style.boxShadow = '0 0 100px #00ff41';
+            finalDiv.style.border = '2px solid #dddddd';
+            finalDiv.style.boxShadow = '0 0 100px #dddddd';
             finalDiv.style.padding = '20px';
             finalDiv.style.textAlign = 'center';
             finalDiv.style.display = 'flex';
@@ -1813,8 +1885,8 @@
             finalDiv.style.alignItems = 'center';
             finalDiv.innerHTML = `
                 <h2 style="color:#ff00ff;">${title}</h2>
-                <p style="color:#00ff41; margin-top:20px;">${desc}</p>
-                <button onclick="location.reload()" style="margin-top:30px; background:#000; border:1px solid #ff00ff; color:#ff00ff; padding:10px 20px; font-family:'Press Start 2P'; cursor:pointer;">REINICIAR</button>
+                <p style="color:#dddddd; margin-top:20px;">${desc}</p>
+                <button onclick="location.reload()" style="margin-top:30px; background:#000; border:1px solid #dddddd; color:#dddddd; padding:10px 20px; font-family:'Press Start 2P'; cursor:pointer;">REINICIAR</button>
             `;
             document.body.appendChild(finalDiv);
         }
